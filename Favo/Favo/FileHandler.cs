@@ -1,9 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Favo
 {
@@ -14,7 +11,7 @@ namespace Favo
         /// </summary>
         /// <param name="path">Path of the file to be read</param>
         /// <returns>List-object indexing textfile line by line</returns>
-        public static List<string> ReadFile(string path)
+        public static List<string> GetFileContent(string path)
         {
             // Check if wanted file actually exists
             if (!File.Exists(path))
@@ -32,6 +29,7 @@ namespace Favo
                     textFileLines.Add(line);
             }
 
+            
             return textFileLines;
         }
 
@@ -42,8 +40,15 @@ namespace Favo
         /// <param name="content">String being written into textfile</param>
         public static void SaveFile(string path, string content)
         {
+            // Check if file extension is .txt
+            if (Path.GetExtension(path) != ".txt")
+                throw new Exception("Wrong file extension! Only \".txt\" is supported");
+
+            // Write string content to file at path
             using (StreamWriter Sw = new StreamWriter(path))
                 Sw.Write(content);
+            
+
         }
     }
 }
