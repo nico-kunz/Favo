@@ -15,8 +15,6 @@ namespace Favo
         /// <returns>List-object indexing textfile line by line</returns>
         public static List<string> GetFileContent(string path)
         {
-            
-
             // Check if wanted file actually exists
             if (!File.Exists(path))
                 throw new Exception("File at path " + path + " does not exist!");

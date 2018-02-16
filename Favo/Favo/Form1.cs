@@ -22,6 +22,7 @@ namespace Favo
             SaveFileDialog Sfw = new SaveFileDialog()
             {
                 DefaultExt = ".txt",
+                Filter = "All Files|*.*",
                 CheckFileExists = true
             };
             
