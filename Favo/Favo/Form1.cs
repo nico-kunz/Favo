@@ -25,6 +25,8 @@ namespace Favo
                 Filter = "All Files|*.*",
                 CheckFileExists = true
             };
+
+           // wadzbiuaewdun
             
             if(Sfw.ShowDialog() == DialogResult.OK)
             {
