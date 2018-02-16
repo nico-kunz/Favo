@@ -16,5 +16,21 @@ namespace Favo
         {
             InitializeComponent();
         }
+
+        private void SaveButton_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog Sfw = new SaveFileDialog()
+            {
+                DefaultExt = ".txt",
+                CheckFileExists = true
+            };
+            
+            if(Sfw.ShowDialog() == DialogResult.OK)
+            {
+                FileHandler.SaveFileContent(Sfw.FileName, textEditorBox.Text);    
+                Console.WriteLine(Sfw.FileName);
+
+            }
+        }
     }
 }

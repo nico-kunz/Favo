@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Forms;
 using System.IO;
 using System.Collections.Generic;
 
@@ -6,6 +7,7 @@ namespace Favo
 {
     class FileHandler
     {
+        
         /// <summary>
         /// Reads lines of file and adds them to List
         /// </summary>
@@ -13,6 +15,8 @@ namespace Favo
         /// <returns>List-object indexing textfile line by line</returns>
         public static List<string> GetFileContent(string path)
         {
+            
+
             // Check if wanted file actually exists
             if (!File.Exists(path))
                 throw new Exception("File at path " + path + " does not exist!");
@@ -38,7 +42,7 @@ namespace Favo
         /// </summary>
         /// <param name="path">Path of the file that has to be saved</param>
         /// <param name="content">String being written into textfile</param>
-        public static void SaveFile(string path, string content)
+        public static void SaveFileContent (string path, string content)
         {
             // Check if file extension is .txt
             if (Path.GetExtension(path) != ".txt")
@@ -47,8 +51,6 @@ namespace Favo
             // Write string content to file at path
             using (StreamWriter Sw = new StreamWriter(path))
                 Sw.Write(content);
-            
-
         }
     }
 }
