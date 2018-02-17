@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Windows.Forms;
 using System.IO;
 using System.Collections.Generic;
 
 namespace Favo
 {
-    class FileHandler
+    static class FileHandler
     {
         
         /// <summary>
@@ -29,9 +28,8 @@ namespace Favo
                 string line = Sr.ReadLine();
                 while (line != null)
                 {
-                    line = Sr.ReadLine();
                     textFileLines.Add(line);
-                    
+                    line = Sr.ReadLine();   
                 }
             }
             

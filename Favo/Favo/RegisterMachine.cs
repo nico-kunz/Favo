@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Favo
 {
     class RegisterMachine
-    {
+    { 
         public RegisterMachine()
         {
 
