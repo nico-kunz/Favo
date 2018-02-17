@@ -25,6 +25,11 @@ namespace Favo
                 Filter = "All Files|*.*"
             };
 
+            if(Sfw == null)
+            {
+                Console.WriteLine("You fucked up");
+            }
+
            // wadzbiuaewdun
             
             if(Sfw.ShowDialog() == DialogResult.OK)
