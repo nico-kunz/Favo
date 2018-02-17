@@ -28,9 +28,12 @@ namespace Favo
                 // line = 0 ==> Last read line did not contain any text;
                 string line = Sr.ReadLine();
                 while (line != null)
+                {
+                    line = Sr.ReadLine();
                     textFileLines.Add(line);
+                    
+                }
             }
-
             
             return textFileLines;
         }
