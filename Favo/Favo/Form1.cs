@@ -59,5 +59,10 @@ namespace Favo
             openPath = null;
             TextEditorBox.Text = "";
         }
+        // Event Handler for the "Schließen" item from the ToolStripMenu
+        private void CloseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }
