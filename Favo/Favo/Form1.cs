@@ -62,11 +62,10 @@ namespace Favo
             TextEditorBox.Text = "";
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        // Event Handler for the "Schließen" item from the ToolStripMenu
+        private void CloseToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            register[2] = 2;
-            register[1] = 1;
-            
+            Application.Exit();
         }
     }
 }
