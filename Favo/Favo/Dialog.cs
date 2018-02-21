@@ -11,6 +11,7 @@ namespace Favo
         /// <returns>Path the user chose to load from</returns>
         public static string LoadFileDialog()
         {
+            // Declare and initialize OpenFileDialog object
             OpenFileDialog Ofd = new OpenFileDialog()
             {
                 Filter = "Text File|*.txt"
@@ -18,6 +19,7 @@ namespace Favo
 
             Console.WriteLine("Dialog.LoadFileDialog");
 
+            // return path user chose, if user clicked on "Ok", otherwise return null
             return (Ofd.ShowDialog() == DialogResult.OK) ? Ofd.FileName : null; 
         }
 
@@ -27,6 +29,7 @@ namespace Favo
         /// <returns>Path the user chose to save the file at</returns>
         public static string SaveFileDialog()
         {
+            // Declare and initialize SaveFileDialog
             SaveFileDialog Sfd = new SaveFileDialog()
             {
                 DefaultExt = ".txt",
@@ -35,6 +38,7 @@ namespace Favo
 
             Console.WriteLine("Dialog.SaveFileDialog");
 
+            // return path user chose, if user clicked on "Ok", otherwise return null
             return (Sfd.ShowDialog() == DialogResult.OK) ? Sfd.FileName : null;
         }
     }

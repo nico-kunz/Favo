@@ -12,11 +12,13 @@ namespace Favo
 {
     public partial class Form1 : Form
     {
+        Register register;
         private static string openPath;
 
         public Form1()
         {
             InitializeComponent();
+            register = new Register();
         }
 
         // Event Handler for the "Speichern als.." item from the ToolStripMenu
@@ -58,6 +60,13 @@ namespace Favo
         {
             openPath = null;
             TextEditorBox.Text = "";
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            register[2] = 2;
+            register[1] = 1;
+            
         }
     }
 }
