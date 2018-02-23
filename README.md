@@ -14,4 +14,5 @@ Filehandler
 
 RegisterMachine
 
+Register
   Emulates the Register of the Machine. Overloaded List<> file type. Stores integers.
