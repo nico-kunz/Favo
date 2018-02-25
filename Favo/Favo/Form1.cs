@@ -12,13 +12,14 @@ namespace Favo
 {
     public partial class Form1 : Form
     {
-        Register register;
+        Registers register;
         private static string openPath;
 
         public Form1()
         {
             InitializeComponent();
-            register = new Register();
+            register = new Registers();
+            RegisterMachine Rm = new RegisterMachine(new List<string>() {"load 1","fail 23"});
         }
 
         // Event Handler for the "Speichern als.." item from the ToolStripMenu
