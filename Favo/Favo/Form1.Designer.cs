@@ -37,7 +37,6 @@
             this.speichernAlsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.schließenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bearbeitenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.button1 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -124,16 +123,6 @@
             this.bearbeitenToolStripMenuItem.Name = "bearbeitenToolStripMenuItem";
             this.bearbeitenToolStripMenuItem.Size = new System.Drawing.Size(75, 20);
             this.bearbeitenToolStripMenuItem.Text = "Bearbeiten";
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(279, 499);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // Form1
             // 

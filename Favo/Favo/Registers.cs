@@ -2,39 +2,39 @@
 
 namespace Favo
 {
-    class Register
+    class Registers
     {
         // actual register with dynamic size
-        private List<int> list;
+        private List<int> register;
 
         // Indexer
         public int this[int index]
         {
             // return Item at index from list
-            get { return list[index]; }
+            get { return register[index]; }
 
             set
             {
                 // resize list if index out of range and add value
-                if (list.Count < index)
+                if (register.Count < index)
                 {
                     // add empty items between last element and wanted index
-                    for (int i = list.Count; i < index; i++)
-                        list.Add(0);
+                    for (int i = register.Count; i < index; i++)
+                        register.Add(0);
 
                     // add value to list 
-                    list.Add(value);
+                    register.Add(value);
                 }
 
                 // set value at wanted index if index not out of range
                 else
-                    list[index] = value;
+                    register[index] = value;
             }
         }
 
-        public Register()
+        public Registers()
         {
-            list = new List<int>();
+            register = new List<int>();
         }
 
 
