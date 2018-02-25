@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.TextEditorBox = new System.Windows.Forms.TextBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.dateiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -76,7 +77,7 @@
             this.neuToolStripMenuItem.Name = "neuToolStripMenuItem";
             this.neuToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
             this.neuToolStripMenuItem.ShowShortcutKeys = false;
-            this.neuToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.neuToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.neuToolStripMenuItem.Text = "Neu";
             this.neuToolStripMenuItem.Click += new System.EventHandler(this.NewToolStripMenuItem_Click);
             // 
@@ -85,8 +86,7 @@
             this.öffnenToolStripMenuItem.Name = "öffnenToolStripMenuItem";
             this.öffnenToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
             this.öffnenToolStripMenuItem.ShowShortcutKeys = false;
-            this.öffnenToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-
+            this.öffnenToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.öffnenToolStripMenuItem.Text = "Öffnen";
             this.öffnenToolStripMenuItem.Click += new System.EventHandler(this.LoadToolStripMenuItem_Click);
             // 
@@ -95,7 +95,7 @@
             this.speichernToolStripMenuItem.Name = "speichernToolStripMenuItem";
             this.speichernToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
             this.speichernToolStripMenuItem.ShowShortcutKeys = false;
-            this.speichernToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.speichernToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.speichernToolStripMenuItem.Text = "Speichern";
             this.speichernToolStripMenuItem.Click += new System.EventHandler(this.SaveToolStripMenuItem_Click);
             // 
@@ -105,7 +105,7 @@
             this.speichernAlsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.S)));
             this.speichernAlsToolStripMenuItem.ShowShortcutKeys = false;
-            this.speichernAlsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.speichernAlsToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.speichernAlsToolStripMenuItem.Text = "Speichern als..";
             this.speichernAlsToolStripMenuItem.Click += new System.EventHandler(this.SaveAsToolStripMenuItem_Click);
             // 
@@ -114,7 +114,7 @@
             this.schließenToolStripMenuItem.Name = "schließenToolStripMenuItem";
             this.schließenToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
             this.schließenToolStripMenuItem.ShowShortcutKeys = false;
-            this.schließenToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.schließenToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.schließenToolStripMenuItem.Text = "Schließen";
             this.schließenToolStripMenuItem.Click += new System.EventHandler(this.CloseToolStripMenuItem_Click);
             // 
@@ -133,6 +133,7 @@
             this.Controls.Add(this.TextEditorBox);
             this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Form1";
