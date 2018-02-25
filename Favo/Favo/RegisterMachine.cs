@@ -14,16 +14,35 @@ namespace Favo
         private List<Operation> Operations;
         private int InstructionCount;
 
-#region DataStructures
+        #region DataStructures
         /// <summary>
         /// Enumeration for different Operations
         /// </summary>
         enum OperationCode
         {
-            LOAD,
-            STORE,
-            ADD,
-            SUB
+            LOAD , 
+            CLOAD ,
+            ILOAD ,
+            STORE ,
+            ISTORE ,
+            ADD ,
+            CADD ,
+            IADD ,
+            SUB ,
+            CSUB ,
+            ISUB ,
+            MUL ,
+            CMUL ,
+            IMUL ,
+            DIV ,
+            CDIV ,
+            IDIV ,
+            GOTO ,
+            END ,
+            IF ,
+            CIF ,
+            IIF
+
         }
 
         /// <summary>
@@ -79,7 +98,7 @@ namespace Favo
 
         private void ExecuteStep(OperationCode opcode, int argument)
         {
-            
+
         }
 
         /// <summary>
@@ -99,7 +118,7 @@ namespace Favo
                     continue;
                 }
 
-                
+
 
                 // split item at whitespace
                 string[] parts = item.Split(' ');
@@ -117,25 +136,80 @@ namespace Favo
                     case "load":
                         opcode = OperationCode.LOAD;
                         break;
+                    case "cload":
+                        opcode = OperationCode.CLOAD;
+                        break;
+                    case "iload":
+                        opcode = OperationCode.ILOAD;
+                        break;
                     case "store":
                         opcode = OperationCode.STORE;
+                        break;
+                    case "istore":
+                        opcode = OperationCode.ISTORE;
                         break;
                     case "add":
                         opcode = OperationCode.ADD;
                         break;
+                    case "cadd":
+                        opcode = OperationCode.CADD;
+                        break;
+                    case "iadd":
+                        opcode = OperationCode.IADD;
+                        break;
                     case "sub":
                         opcode = OperationCode.SUB;
+                        break;
+                    case "csub":
+                        opcode = OperationCode.CSUB;
+                        break;
+                    case "isub":
+                        opcode = OperationCode.ISUB;
+                        break;
+                    case "mul":
+                        opcode = OperationCode.MUL;
+                        break;
+                    case "cmul":
+                        opcode = OperationCode.CMUL;
+                        break;
+                    case "imul":
+                        opcode = OperationCode.IMUL;
+                        break;
+                    case "div":
+                        opcode = OperationCode.DIV;
+                        break;
+                    case "cdiv":
+                        opcode = OperationCode.CDIV;
+                        break;
+                    case "idiv":
+                        opcode = OperationCode.IDIV;
+                        break;
+                    case "goto":
+                        opcode = OperationCode.GOTO;
+                        break;
+                    case "end":
+                        opcode = OperationCode.END;
+                        break;
+                    case "if":
+                        opcode = OperationCode.IF;
+                        break;
+                    case "cif":
+                        opcode = OperationCode.CIF;
+                        break;
+                    case "iif":
+                        opcode = OperationCode.IIF;
                         break;
                     default:
                         throw new Exception("Unknown command at line " + (InstructionCount + 1).ToString());
                 }
+
 
                 // save argument 
                 int argument = int.Parse(parts[1]);
 
                 // add everything to List<Operation> Operations
                 Operations.Add(new Operation(InstructionCount, opcode, argument));
-                
+
                 // Increment instruction counter for each new instruction
                 InstructionCount++;
             }
