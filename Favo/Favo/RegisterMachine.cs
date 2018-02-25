@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+ * Probleme:
+ *              Linenumber wächst auch mit Kommentar 
+ * 
+ * 
+ * 
+ */
+
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,10 +18,11 @@ namespace Favo
     class RegisterMachine
     {
         private int Accumulator;
-        private Registers Registers;
+        private Registers Heap;
         private List<string> Code;
         private List<Operation> Operations;
-        private int InstructionCount;
+        private Dictionary<string, int> Labels;
+        private int InstructionPointer, InstructionCounter;
 
         #region DataStructures
         /// <summary>
@@ -20,28 +30,30 @@ namespace Favo
         /// </summary>
         enum OperationCode
         {
-            LOAD , 
-            CLOAD ,
-            ILOAD ,
-            STORE ,
-            ISTORE ,
-            ADD ,
-            CADD ,
-            IADD ,
-            SUB ,
-            CSUB ,
-            ISUB ,
-            MUL ,
-            CMUL ,
-            IMUL ,
-            DIV ,
-            CDIV ,
-            IDIV ,
-            GOTO ,
-            END ,
-            IF ,
-            CIF ,
-            IIF
+            LOAD,
+            CLOAD,
+            ILOAD,
+            STORE,
+            ISTORE,
+            ADD,
+            CADD,
+            IADD,
+            SUB,
+            CSUB,
+            ISUB,
+            MUL,
+            CMUL,
+            IMUL,
+            DIV,
+            CDIV,
+            IDIV,
+            GOTO,
+            END,
+            IF,
+            CIF,
+            IIF,
+
+            NULL
 
         }
 
@@ -79,9 +91,9 @@ namespace Favo
             // initialize code the register machine has to execute
             Code = codeToExecute;
 
-            InstructionCount = 1;
+            InstructionPointer = 1;
             Accumulator = 0;
-            Registers = new Registers();
+            Heap = new Registers();
             Operations = new List<Operation>();
 
             TranslateCode();
@@ -90,15 +102,109 @@ namespace Favo
 
 
 
-        public void ExecuteRegisterMachine(List<string> code, bool stepByStep)
+        public void ExecuteRegisterMachine(bool stepByStep)
         {
 
 
         }
 
-        private void ExecuteStep(OperationCode opcode, int argument)
+        private bool ExecuteStep(OperationCode opcode, int argument)
         {
+            switch (opcode)
+            {
+                case OperationCode.LOAD:
+                    Accumulator = Heap[argument];
+                    break;
 
+                case OperationCode.CLOAD:
+                    Accumulator = argument;
+                    break;
+
+                case OperationCode.ILOAD:
+                    Accumulator = Heap[Heap[argument]];
+                    break;
+
+                case OperationCode.STORE:
+                    Heap[argument] = Accumulator;
+                    break;
+
+                case OperationCode.ISTORE:
+                    Heap[Heap[argument]] = Accumulator;
+                    break;
+
+                case OperationCode.ADD:
+                    Accumulator += Heap[argument];
+                    break;
+
+                case OperationCode.CADD:
+                    Accumulator += argument;
+                    break;
+
+                case OperationCode.IADD:
+                    Accumulator += Heap[Heap[argument]];
+                    break;
+
+                case OperationCode.SUB:
+                    Accumulator -= Heap[argument];
+                    break;
+
+                case OperationCode.CSUB:
+                    Accumulator -= argument;
+                    break;
+
+                case OperationCode.ISUB:
+                    Accumulator -= Heap[Heap[argument]];
+                    break;
+
+                case OperationCode.MUL:
+                    Accumulator *= Heap[argument];
+                    break;
+
+                case OperationCode.CMUL:
+                    Accumulator *= argument;
+                    break;
+
+                case OperationCode.IMUL:
+                    Accumulator *= Heap[Heap[argument]];
+                    break;
+
+                case OperationCode.DIV:
+                    Accumulator /= Heap[argument];
+                    break;
+
+                case OperationCode.CDIV:
+                    Accumulator /= argument;
+                    break;
+
+                case OperationCode.IDIV:
+                    Accumulator /= Heap[Heap[argument]];
+                    break;
+
+                case OperationCode.GOTO:
+                    InstructionPointer = argument;
+                    // PROBLEM !!! 
+                    break;
+
+                case OperationCode.END:
+                    return false;
+
+                case OperationCode.IF:
+                    if (Accumulator != Heap[argument])
+                        InstructionPointer++;
+                    break;
+
+                case OperationCode.CIF:
+                    if (Accumulator != argument)
+                        InstructionPointer++;
+                    break;
+
+                case OperationCode.IIF:
+                    if (Accumulator != Heap[Heap[argument]])
+                        InstructionPointer++;
+                    break;
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -108,13 +214,16 @@ namespace Favo
         {
             // temporarily saving the demanded operation
             OperationCode opcode;
+            int argument = 0;
 
             foreach (string item in Code)
             {
                 // ignore comments
                 if (item.Substring(0, 2) == "//")
                 {
-                    InstructionCount++;
+                    Operations.Add(new Operation(InstructionPointer, OperationCode.NULL, 0));
+                    InstructionPointer++;
+                    InstructionCounter++;
                     continue;
                 }
 
@@ -126,7 +235,7 @@ namespace Favo
                 // throw exception if more than one whitespace
                 if (parts.Length != 2)
                 {
-                    throw new Exception("Invalid wasauchimmer at line " + (InstructionCount + 1).ToString());
+                    throw new Exception("Invalid wasauchimmer at line " + (InstructionPointer + 1).ToString());
                 }
 
 
@@ -200,18 +309,23 @@ namespace Favo
                         opcode = OperationCode.IIF;
                         break;
                     default:
-                        throw new Exception("Unknown command at line " + (InstructionCount + 1).ToString());
+                        throw new Exception("Unknown command at line " + (InstructionPointer + 1).ToString());
                 }
 
 
+
                 // save argument 
-                int argument = int.Parse(parts[1]);
+                if (opcode == OperationCode.GOTO && int.TryParse(parts[1], out argument) == false)
+                    argument = Labels[parts[1]];
+                else
+                    argument = int.Parse(parts[1]);
 
                 // add everything to List<Operation> Operations
-                Operations.Add(new Operation(InstructionCount, opcode, argument));
+                Operations.Add(new Operation(InstructionPointer, opcode, argument));
 
                 // Increment instruction counter for each new instruction
-                InstructionCount++;
+                InstructionPointer++;
+                InstructionCounter++;
             }
         }
     }

@@ -19,7 +19,7 @@ namespace Favo
         {
             InitializeComponent();
             register = new Registers();
-            RegisterMachine Rm = new RegisterMachine(new List<string>() {"load 1"});
+            RegisterMachine Rm = new RegisterMachine(new List<string>() {"load 1", "goto test","// testkommentar", "goto 2"});
         }
 
         // Event Handler for the "Speichern als.." item from the ToolStripMenu
