@@ -19,7 +19,7 @@ namespace Favo
         {
             InitializeComponent();
             register = new Registers();
-            RegisterMachine Rm = new RegisterMachine(new List<string>() {"load 1", "goto test","// testkommentar", "goto 2"});
+            // RegisterMachine Rm = new RegisterMachine(new List<string>() {"test:", "store 1", "cadd 1", "goto test", "kevin:", "// testkommentar", "label:", "goto 2"});
         }
 
         // Event Handler for the "Speichern als.." item from the ToolStripMenu
@@ -67,6 +67,11 @@ namespace Favo
         private void CloseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void Form1_Shown(object sender, EventArgs e)
+        {
+            RegisterMachine Rm = new RegisterMachine(new List<string>() { "test:", "store 1", "cadd 1", "goto test", "kevin:", "// testkommentar", "label:", "goto 2" });
         }
     }
 }
