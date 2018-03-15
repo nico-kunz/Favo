@@ -135,8 +135,8 @@ namespace Favo
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1223, 24);
             this.panel1.TabIndex = 6;
-            this.panel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown);
-            this.panel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseMove);
+            this.panel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Panel1_MouseDown);
+            this.panel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Panel1_MouseMove);
             // 
             // button1
             // 
@@ -153,7 +153,7 @@ namespace Favo
             this.button1.TabIndex = 8;
             this.button1.Text = "X";
             this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button1.Click += new System.EventHandler(this.CloseButton_Click);
             // 
             // panel2
             // 
@@ -178,9 +178,9 @@ namespace Favo
             // 
             this.neuToolStripMenuItem1.ForeColor = System.Drawing.Color.White;
             this.neuToolStripMenuItem1.Image = global::Favo.Properties.Resources.NewFile_16x;
-            this.neuToolStripMenuItem1.Name = "neuToolStripMenuItem1";
+            this.neuToolStripMenuItem1.Name = "newToolStripMenuItem1";
             this.neuToolStripMenuItem1.Size = new System.Drawing.Size(23, 20);
-            this.neuToolStripMenuItem1.Click += new System.EventHandler(this.NeuToolStripMenuItem1Click);
+            this.neuToolStripMenuItem1.Click += new System.EventHandler(this.NewToolStripMenuItem1_Click);
             // 
             // öffnenToolStripMenuItem1
             // 
@@ -188,7 +188,7 @@ namespace Favo
             this.öffnenToolStripMenuItem1.Image = global::Favo.Properties.Resources.ASX_Open_blue_16x;
             this.öffnenToolStripMenuItem1.Name = "öffnenToolStripMenuItem1";
             this.öffnenToolStripMenuItem1.Size = new System.Drawing.Size(23, 20);
-            this.öffnenToolStripMenuItem1.Click += new System.EventHandler(this.ÖffnenToolStripMenuItem1Click);
+            this.öffnenToolStripMenuItem1.Click += new System.EventHandler(this.ÖffnenToolStripMenuItem1_Click);
             // 
             // saveToolStripMenuItem
             // 
@@ -196,14 +196,14 @@ namespace Favo
             this.saveToolStripMenuItem.Image = global::Favo.Properties.Resources.Save_16x;
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.Size = new System.Drawing.Size(23, 20);
-            this.saveToolStripMenuItem.Click += new System.EventHandler(this.SaveToolStripMenuItemClick);
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.SaveToolStripMenuItem_Click);
             // 
             // saveasToolStripMenuItem
             // 
             this.saveasToolStripMenuItem.Image = global::Favo.Properties.Resources.SaveAs_16x;
             this.saveasToolStripMenuItem.Name = "saveasToolStripMenuItem";
             this.saveasToolStripMenuItem.Size = new System.Drawing.Size(23, 20);
-            this.saveasToolStripMenuItem.Click += new System.EventHandler(this.SaveasToolStripMenuItemClick);
+            this.saveasToolStripMenuItem.Click += new System.EventHandler(this.SaveAsToolStripMenuItem_Click);
             // 
             // pictureBox1
             // 
