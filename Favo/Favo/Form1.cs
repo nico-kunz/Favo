@@ -28,7 +28,9 @@ namespace Favo
             InitializeComponent();
             menuStrip1.Renderer = new ToolStripProfessionalRenderer(new CustomColorTable());
             register = new Registers();
+
             RegisterMachine Rm = new RegisterMachine(new List<string>() { "load 1" });
+
         }
 
         private void Form_Load(object sender, EventArgs e)

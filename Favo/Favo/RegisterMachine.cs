@@ -91,12 +91,19 @@ namespace Favo
             // initialize code the register machine has to execute
             Code = codeToExecute;
 
+            // standard initializations
             InstructionPointer = 1;
+            InstructionCounter = 0;
             Accumulator = 0;
             Heap = new Registers();
             Operations = new List<Operation>();
+            Labels = new Dictionary<string, int>();
 
+            // Translate code into usable format
             TranslateCode();
+
+            for (; InstructionPointer < Operations.Count; InstructionPointer++)
+                ExecuteStep(Operations[InstructionPointer - 1].operationCode, Operations[InstructionPointer - 1].argument);
 
         }
 
@@ -110,6 +117,8 @@ namespace Favo
 
         private bool ExecuteStep(OperationCode opcode, int argument)
         {
+            InstructionCounter++;
+
             switch (opcode)
             {
                 case OperationCode.LOAD:
@@ -181,7 +190,7 @@ namespace Favo
                     break;
 
                 case OperationCode.GOTO:
-                    InstructionPointer = argument;
+                    InstructionPointer = argument - 1;
                     // PROBLEM !!! 
                     break;
 
@@ -202,7 +211,13 @@ namespace Favo
                     if (Accumulator != Heap[Heap[argument]])
                         InstructionPointer++;
                     break;
+
+
+
+
+
             }
+
 
             return true;
         }
@@ -216,14 +231,14 @@ namespace Favo
             OperationCode opcode;
             int argument = 0;
 
+            int counter = 1;
             foreach (string item in Code)
             {
                 // ignore comments
                 if (item.Substring(0, 2) == "//")
                 {
                     Operations.Add(new Operation(InstructionPointer, OperationCode.NULL, 0));
-                    InstructionPointer++;
-                    InstructionCounter++;
+                    counter++;
                     continue;
                 }
 
@@ -232,11 +247,7 @@ namespace Favo
                 // split item at whitespace
                 string[] parts = item.Split(' ');
 
-                // throw exception if more than one whitespace
-                if (parts.Length != 2)
-                {
-                    throw new Exception("Invalid wasauchimmer at line " + (InstructionPointer + 1).ToString());
-                }
+                
 
 
                 // initialize opcode with correct operation code
@@ -309,9 +320,31 @@ namespace Favo
                         opcode = OperationCode.IIF;
                         break;
                     default:
-                        throw new Exception("Unknown command at line " + (InstructionPointer + 1).ToString());
+                        // if last character :
+                        if(parts[0].Substring(parts[0].Length - 1) == ":")
+                        {
+                            // Add Label name and line number to Dictionary
+                            Labels.Add(parts[0].Substring(0, parts[0].Length - 1), counter);
+
+                            foreach (var element in Labels)
+                                Console.WriteLine(element.ToString());
+
+                            // Add null operation to Operations to prevent gaps
+                            Operations.Add(new Operation(counter, OperationCode.NULL, 0));
+
+                            // Increment Pointer and Counter
+                            counter++;
+                            continue;
+                        }
+                        else
+                            throw new Exception("Unknown command at line " + (counter + 1).ToString());
                 }
 
+                // throw exception if more than one whitespace
+                if (parts.Length != 2)
+                {
+                    throw new Exception("Invalid wasauchimmer at line " + (counter + 1).ToString());
+                }
 
 
                 // save argument 
@@ -321,11 +354,10 @@ namespace Favo
                     argument = int.Parse(parts[1]);
 
                 // add everything to List<Operation> Operations
-                Operations.Add(new Operation(InstructionPointer, opcode, argument));
+                Operations.Add(new Operation(counter, opcode, argument));
 
                 // Increment instruction counter for each new instruction
-                InstructionPointer++;
-                InstructionCounter++;
+                counter++;
             }
         }
     }
