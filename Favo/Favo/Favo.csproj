@@ -74,6 +74,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -90,6 +91,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="FavoIcon.ico" />
+    <Content Include="Icons\ASX_Open_blue_16x.png" />
+    <Content Include="Icons\ASX_Open_blue_16x.svg" />
+    <Content Include="Icons\Close_8x_16x.png" />
+    <Content Include="Icons\Close_8x_16x.svg" />
+    <Content Include="Icons\NewFile_16x.png" />
+    <Content Include="Icons\NewFile_16x.svg" />
+    <Content Include="Icons\SaveAs_16x.png" />
+    <Content Include="Icons\SaveAs_16x.svg" />
+    <Content Include="Icons\Save_16x.png" />
+    <Content Include="Icons\Save_16x.svg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
