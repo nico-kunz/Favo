@@ -278,15 +278,7 @@ namespace Favo
             this.SuspendLayout();
             // 
             // TextEditorBox
-            // 
-            this.TextEditorBox.AutoCompleteCustomSource.AddRange(new string[] {
-            "Lukas",
-            "Max",
-            "Jan",
-            "Leon",
-            "Nico"});
-            this.TextEditorBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.TextEditorBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
+            //
             this.TextEditorBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(39)))), ((int)(((byte)(42)))));
             this.TextEditorBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.TextEditorBox.Dock = System.Windows.Forms.DockStyle.Fill;
