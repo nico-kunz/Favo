@@ -12,12 +12,20 @@ namespace Favo
 {
     public partial class Form1 : Form
     {
+        public Point mouseLocation;
+        Registers register;
+        private static string openPath;
+        private DataTable dt;
+
         // custom colorTable class for MenuStrip (+ legacy)
         public class CustomColorTable : ProfessionalColorTable
         {
             public override Color MenuItemSelected { get { return Color.FromArgb(44, 47, 51); } }
             //public override Color MenuBorder {get {return Color.FromArgb(44,47,51);}}
             public override Color MenuItemBorder { get { return Color.FromArgb(114, 137, 218); } }
+
+            
+            
 
         }
 
@@ -28,16 +36,25 @@ namespace Favo
             InitializeComponent();
             menuStrip1.Renderer = new ToolStripProfessionalRenderer(new CustomColorTable());
             register = new Registers();
+            dt = new DataTable();
 
+            register[2] = 0;
+
+            dt.Columns.Add("index");
+            dt.Columns.Add("value");
+            
+            /*foreach(DataGridViewColumn dtc in dataGridView2.Columns)
+            {
+                dtc.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
+            WHY YOU NOT WORKING
+            */
             RegisterMachine Rm = new RegisterMachine(new List<string>() { "load 1" });
+
 
         }
 
-        
-        public Point mouseLocation;
-        Registers register;
-        private static string openPath;
-
+        #region EventHandler
 
         // Render Form with Custom Colors
         private void Form_Load(object sender, EventArgs e)
@@ -106,5 +123,21 @@ namespace Favo
                 Location = mousePosition;
             }
         }
+
+        #endregion
+
+        /// <summary>
+        /// Updates DataGridView2 to show values of registers
+        /// </summary>
+        private void UpdateDataGridView()
+        {
+            dt.Clear();
+            
+            for (int i = 0; i < register.Length; i++)
+            {
+                dt.Rows.Add(i.ToString(), register[i]);
+            }
+        }
+
     }
 }
