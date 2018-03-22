@@ -17,11 +17,10 @@ namespace Favo
         private static string openPath;
         private DataTable dt;
 
-        // custom colorTable class for MenuStrip (+ legacy)
+        // custom colorTable class for MenuStrip (custom appearance)
         public class CustomColorTable : ProfessionalColorTable
         {
             public override Color MenuItemSelected { get { return Color.FromArgb(44, 47, 51); } }
-            //public override Color MenuBorder {get {return Color.FromArgb(44,47,51);}}
             public override Color MenuItemBorder { get { return Color.FromArgb(114, 137, 218); } }
 
             
@@ -102,7 +101,21 @@ namespace Favo
             openPath = null;
             TextEditorBox.Text = "";
         }
+        
+        
+        //Event Handler for the "Run" item in the MenuStrip, compiles and runs the program
+        private void RunToolStripMenuItemClick(object sender, System.EventArgs e)
+        {
+        	
+        }
 
+        
+        //Event Handler for the "imode"item in the MenuStrip, switches between if-modes
+        void ImodeToolStripMenuItemClick(object sender, EventArgs e)
+        {
+        	
+        }
+        
         // Event Handler for the "Schließen" item from the MenuStrip
         private void CloseButton_Click(object sender, EventArgs e)
         {
@@ -138,6 +151,7 @@ namespace Favo
                 dt.Rows.Add(i.ToString(), register[i]);
             }
         }
-
+        
+        
     }
 }
