@@ -16,6 +16,7 @@ namespace Favo
         Registers register;
         private static string openPath;
         private DataTable dt;
+        bool saved = true;
 
         // custom colorTable class for MenuStrip (custom appearance)
         public class CustomColorTable : ProfessionalColorTable
@@ -70,6 +71,8 @@ namespace Favo
 
             if (s != null)
                 FileHandler.SaveFileContent(s, TextEditorBox.Text);
+                
+            saved = true;
 
         }
 
@@ -81,25 +84,33 @@ namespace Favo
                 FileHandler.SaveFileContent(openPath, TextEditorBox.Text);
             else
                 SaveAsToolStripMenuItem_Click(null, null);
+                
+            saved = true;
         }
 
         // Event Handler for the "Öffnen" item from the MenuStrip
         private void ÖffnenToolStripMenuItem1_Click(object sender, EventArgs e)
         {
+            CheckSavedStatus();
+            
             // Get file path from LoadFileDialog, read file from path and set TextEditorBox.Text to Filetext
             string s = Dialog.LoadFileDialog();
             openPath = s;
 
             if (s != null)
                 TextEditorBox.Text = String.Join(System.Environment.NewLine, FileHandler.GetFileContent(s));
-
+            
+            saved = true;
         }
 
         // Event Handler for the "Neu" item from the MenuStrip, resets all variables and TextEditorBox.Text
         private void NewToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             openPath = null;
+            CheckSavedStatus();
             TextEditorBox.Text = "";
+            
+            saved = true;
         }
         
         
@@ -119,6 +130,7 @@ namespace Favo
         // Event Handler for the "Schließen" item from the MenuStrip
         private void CloseButton_Click(object sender, EventArgs e)
         {
+            CheckSavedStatus();
             Application.Exit();
         }
 
@@ -134,6 +146,29 @@ namespace Favo
                 Point mousePosition = Control.MousePosition;
                 mousePosition.Offset(mouseLocation.X, mouseLocation.Y);
                 Location = mousePosition;
+            }
+        }
+        
+	// Event Handler for the "TextBox" item, if it's changed
+        void TextEditorBoxTextChanged(object sender, EventArgs e)
+        {
+            saved = false;
+        }
+	
+	// Method to check, if latest changes are saved. Shows MessageBox.
+	/// <summary>
+        /// Checks if latest changes are saved.
+        /// </summary>
+        void CheckSavedStatus()
+        {
+            if (!saved)
+            {
+        	DialogResult dialogResult = MessageBox.Show(
+        		"Änderungen am Code speichern?", "Ungespeicherte Änderungen",
+        		MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+        		
+		if(dialogResult == DialogResult.Yes)
+			SaveToolStripMenuItem_Click(null, null);
             }
         }
 
