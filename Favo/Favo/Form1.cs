@@ -143,6 +143,9 @@ namespace Favo
         }
 	
 	// Method to check, if latest changes are saved. Shows MessageBox.
+	/// <summary>
+        /// Checks if latest changes are saved.
+        /// </summary>
         void CheckSavedStatus()
         {
             if (!saved)
