@@ -92,15 +92,7 @@ namespace Favo
         // Event Handler for the "Öffnen" item from the MenuStrip
         private void ÖffnenToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            if (!saved)
-            {
-            DialogResult dialogResult = MessageBox.Show(
-                "Änderungen am Code speichern?", "Ungespeicherte Änderungen",
-                MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
-                
-                if (dialogResult == DialogResult.Yes)
-                    SaveToolStripMenuItem_Click(null, null);
-            }
+            CheckSavedStatus();
             
             // Get file path from LoadFileDialog, read file from path and set TextEditorBox.Text to Filetext
             string s = Dialog.LoadFileDialog();
@@ -116,15 +108,7 @@ namespace Favo
         private void NewToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             openPath = null;
-            if (!saved)
-        	{
-        		DialogResult dialogResult = MessageBox.Show(
-        			"Änderungen am Code speichern?", "Ungespeicherte Änderungen",
-        			MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
-            	
-				if(dialogResult == DialogResult.Yes)
-					SaveToolStripMenuItem_Click(null, null);
-        	}
+            CheckSavedStatus();
             TextEditorBox.Text = "";
             
             saved = true;
@@ -133,17 +117,8 @@ namespace Favo
         // Event Handler for the "Schließen" item from the MenuStrip
         private void CloseButton_Click(object sender, EventArgs e)
         {
-            if (!saved)
-        	{
-        		DialogResult dialogResult = MessageBox.Show(
-        			"Änderungen am Code speichern?", "Ungespeicherte Änderungen",
-        			MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
-        		
-				if(dialogResult == DialogResult.Yes)
-					SaveToolStripMenuItem_Click(null, null);
-        	}
-        	
-        	Application.Exit();
+            CheckSavedStatus();
+            Application.Exit();
         }
 
         private void Panel1_MouseDown(object sender, MouseEventArgs e)
@@ -161,9 +136,24 @@ namespace Favo
             }
         }
         
+	// Event Handler for the "TextBox" item, if it's changed
         void TextEditorBoxTextChanged(object sender, EventArgs e)
         {
-        	saved = false;
+            saved = false;
+        }
+	
+	// Method to check, if latest changes are saved. Shows MessageBox.
+        void CheckSavedStatus()
+        {
+            if (!saved)
+            {
+        	DialogResult dialogResult = MessageBox.Show(
+        		"Änderungen am Code speichern?", "Ungespeicherte Änderungen",
+        		MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+        		
+		if(dialogResult == DialogResult.Yes)
+			SaveToolStripMenuItem_Click(null, null);
+            }
         }
 
         #endregion
