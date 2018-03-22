@@ -81,6 +81,7 @@ namespace Favo
             this.TextEditorBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.TextEditorBox.Size = new System.Drawing.Size(558, 343);
             this.TextEditorBox.TabIndex = 0;
+            this.TextEditorBox.TextChanged += new System.EventHandler(this.TextEditorBoxTextChanged);
             // 
             // menuStrip1
             // 
