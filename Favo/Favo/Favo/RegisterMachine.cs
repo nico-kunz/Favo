@@ -1,13 +1,4 @@
-﻿/*
- * Probleme:
- *              Linenumber wächst auch mit Kommentar 
- * 
- * 
- * 
- */
-
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,7 +9,7 @@ namespace Favo
     class RegisterMachine
     {
         private int Accumulator;
-        private Registers Heap;
+        public Registers Heap { get; private set; }
         private List<string> Code;
         private List<Operation> Operations;
         private Dictionary<string, int> Labels;
@@ -101,17 +92,14 @@ namespace Favo
 
             // Translate code into usable format
             TranslateCode();
-
-            for (; InstructionPointer < Operations.Count; InstructionPointer++)
-                ExecuteStep(Operations[InstructionPointer - 1].operationCode, Operations[InstructionPointer - 1].argument);
-
         }
 
 
 
         public void ExecuteRegisterMachine(bool stepByStep)
         {
-
+            for(; InstructionPointer <= Operations.Count; InstructionPointer++)
+                ExecuteStep(Operations[InstructionPointer - 1].operationCode, Operations[InstructionPointer - 1].argument);
 
         }
 
@@ -232,8 +220,14 @@ namespace Favo
             int argument = 0;
 
             int counter = 1;
+            if (Code.Count == 1 && Code[0] == "")
+                return;
+
             foreach (string item in Code)
             {
+                /*if(item.Length == 0)
+            		continue; nachher fertig machen*/
+
                 // ignore comments
                 if (item.Substring(0, 2) == "//")
                 {
