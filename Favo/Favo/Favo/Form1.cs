@@ -14,6 +14,7 @@ namespace Favo
     {
         public Point mouseLocation;
         Registers register;
+        RegisterMachine rM;
         private static string openPath;
         private DataTable dt;
         bool saved = true;
@@ -35,13 +36,19 @@ namespace Favo
 
             InitializeComponent();
             menuStrip1.Renderer = new ToolStripProfessionalRenderer(new CustomColorTable());
+
+            rM = new RegisterMachine(new List<string>() { "" });
             register = new Registers();
             dt = new DataTable();
 
-            register[2] = 0;
+            register[20] = 0;
 
             dt.Columns.Add("index");
             dt.Columns.Add("value");
+
+            dataGridView2.DataSource = dt;
+
+            UpdateDataGridView();
             
             /*foreach(DataGridViewColumn dtc in dataGridView2.Columns)
             {
@@ -49,7 +56,7 @@ namespace Favo
             }
             WHY YOU NOT WORKING
             */
-            RegisterMachine Rm = new RegisterMachine(new List<string>() { "load 1" });
+            
 
 
         }
@@ -117,7 +124,9 @@ namespace Favo
         //Event Handler for the "Run" item in the MenuStrip, compiles and runs the program
         private void RunToolStripMenuItemClick(object sender, System.EventArgs e)
         {
-        	
+            rM = new RegisterMachine(TextEditorBox.Text.Split('\n').ToList());
+            rM.ExecuteRegisterMachine(false);
+            UpdateDataGridView();
         }
 
         
@@ -181,9 +190,9 @@ namespace Favo
         {
             dt.Clear();
             
-            for (int i = 0; i < register.Length; i++)
+            for (int i = 0; i < rM.Heap.Length; i++)
             {
-                dt.Rows.Add(i.ToString(), register[i]);
+                dt.Rows.Add(i.ToString(), rM.Heap[i]);
             }
         }
         
