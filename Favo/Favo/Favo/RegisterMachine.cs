@@ -179,7 +179,6 @@ namespace Favo
 
                 case OperationCode.GOTO:
                     InstructionPointer = argument - 1;
-                    // PROBLEM !!! 
                     break;
 
                 case OperationCode.END:
@@ -220,13 +219,16 @@ namespace Favo
             int argument = 0;
 
             int counter = 1;
+
+            // stop translation if code is empty
             if (Code.Count == 1 && Code[0] == "")
                 return;
 
             foreach (string item in Code)
             {
-                /*if(item.Length == 0)
-            		continue; nachher fertig machen*/
+                // ignore empty lines of code
+                if(string.IsNullOrWhiteSpace(item))
+            		continue;
 
                 // ignore comments
                 if (item.Substring(0, 2) == "//")
@@ -237,11 +239,8 @@ namespace Favo
                 }
 
 
-
                 // split item at whitespace
                 string[] parts = item.Split(' ');
-
-                
 
 
                 // initialize opcode with correct operation code

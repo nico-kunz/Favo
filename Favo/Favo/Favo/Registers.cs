@@ -4,7 +4,7 @@ namespace Favo
 {
     class Registers
     {
-        // actual register with dynamic size
+        // actual registers with dynamic size
         private List<int> register;
         public int Length { get; private set; }
 
@@ -12,7 +12,21 @@ namespace Favo
         public int this[int index]
         {
             // return Item at index from list
-            get { return register[index]; }
+            get
+            {
+                // Create registers if index out of range
+                if (register.Count <= index)
+                {
+                    for (int i = register.Count; i <= index; i++)
+                    {
+                        register.Add(0);
+                        Length++;
+                    }
+
+                }
+
+                return register[index];
+            }
 
             set
             {
@@ -42,9 +56,5 @@ namespace Favo
         {
             register = new List<int>();
         }
-
-       
-
-
     }
 }
