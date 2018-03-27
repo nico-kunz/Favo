@@ -17,48 +17,42 @@ namespace Favo
         RegisterMachine rM;
         private static string openPath;
         private DataTable dt;
-        bool saved = true;
+        bool saved;
 
         // custom colorTable class for MenuStrip (custom appearance)
         public class CustomColorTable : ProfessionalColorTable
         {
             public override Color MenuItemSelected { get { return Color.FromArgb(44, 47, 51); } }
             public override Color MenuItemBorder { get { return Color.FromArgb(114, 137, 218); } }
-
-            
-            
-
         }
 
         // Constructor, initialize important components and variables 
         public Form1()
         {
-
             InitializeComponent();
             menuStrip1.Renderer = new ToolStripProfessionalRenderer(new CustomColorTable());
 
             rM = new RegisterMachine(new List<string>() { "" });
             register = new Registers();
             dt = new DataTable();
+            saved = true;
 
-            register[20] = 0;
-
+            // Columns
             dt.Columns.Add("index");
             dt.Columns.Add("value");
 
+            // set columns
             dataGridView2.DataSource = dt;
 
-            UpdateDataGridView();
-            
-            /*foreach(DataGridViewColumn dtc in dataGridView2.Columns)
+
+            //UpdateDataGridView();
+
+
+            // disable sorting of columns
+            foreach (DataGridViewColumn column in dataGridView2.Columns)
             {
-                dtc.SortMode = DataGridViewColumnSortMode.NotSortable;
+                column.SortMode = DataGridViewColumnSortMode.NotSortable;
             }
-            WHY YOU NOT WORKING
-            */
-            
-
-
         }
 
         #region EventHandler
@@ -158,26 +152,25 @@ namespace Favo
             }
         }
         
-	// Event Handler for the "TextBox" item, if it's changed
+	    // Event Handler for the "TextBox" item, if it's changed
         void TextEditorBoxTextChanged(object sender, EventArgs e)
         {
             saved = false;
         }
 	
-	// Method to check, if latest changes are saved. Shows MessageBox.
-	/// <summary>
+	    // Method to check, if latest changes are saved. Shows MessageBox.
+	    /// <summary>
         /// Checks if latest changes are saved.
         /// </summary>
         void CheckSavedStatus()
         {
             if (!saved)
             {
-        	DialogResult dialogResult = MessageBox.Show(
-        		"Änderungen am Code speichern?", "Ungespeicherte Änderungen",
+        	    DialogResult dialogResult = MessageBox.Show("Änderungen am Code speichern?", "Ungespeicherte Änderungen",
         		MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
         		
-		if(dialogResult == DialogResult.Yes)
-			SaveToolStripMenuItem_Click(null, null);
+		        if(dialogResult == DialogResult.Yes)
+			        SaveToolStripMenuItem_Click(null, null);
             }
         }
 
@@ -195,7 +188,5 @@ namespace Favo
                 dt.Rows.Add(i.ToString(), rM.Heap[i]);
             }
         }
-        
-        
     }
 }
