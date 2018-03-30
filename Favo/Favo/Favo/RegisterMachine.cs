@@ -8,12 +8,13 @@ namespace Favo
 {
     class RegisterMachine
     {
-        private int Accumulator;
+        public int Accumulator { get; private set; }
         public Registers Heap { get; private set; }
         private List<string> Code;
         private List<Operation> Operations;
         private Dictionary<string, int> Labels;
-        private int InstructionPointer, InstructionCounter;
+        private int InstructionPointer;
+        public int InstructionCounter {get; private set;}
 
         #region DataStructures
         /// <summary>
@@ -43,6 +44,7 @@ namespace Favo
             IF,
             CIF,
             IIF,
+            GIF,
 
             NULL
 
@@ -199,6 +201,9 @@ namespace Favo
                         InstructionPointer++;
                     break;
 
+                case OperationCode.GIF:
+                    // stupid if
+                    break;
 
 
 
@@ -312,6 +317,9 @@ namespace Favo
                     case "iif":
                         opcode = OperationCode.IIF;
                         break;
+                    case "gif":
+                        opcode = OperationCode.GIF;
+                        break;
                     default:
                         // if last character :
                         if(parts[0].Substring(parts[0].Length - 1) == ":")
@@ -336,7 +344,7 @@ namespace Favo
                 // throw exception if more than one whitespace
                 if (parts.Length != 2)
                 {
-                    throw new Exception("Invalid wasauchimmer at line " + (counter + 1).ToString());
+                    throw new Exception("Too many whitespace at line " + (counter + 1).ToString());
                 }
 
 

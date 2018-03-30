@@ -38,14 +38,11 @@ namespace Favo
             saved = true;
 
             // Columns
-            dt.Columns.Add("index");
-            dt.Columns.Add("value");
+            dt.Columns.Add("Index");
+            dt.Columns.Add("Value");
 
             // set columns
             dataGridView2.DataSource = dt;
-
-
-            //UpdateDataGridView();
 
 
             // disable sorting of columns
@@ -72,7 +69,7 @@ namespace Favo
 
             if (s != null)
                 FileHandler.SaveFileContent(s, TextEditorBox.Text);
-                
+
             saved = true;
 
         }
@@ -85,7 +82,7 @@ namespace Favo
                 FileHandler.SaveFileContent(openPath, TextEditorBox.Text);
             else
                 SaveAsToolStripMenuItem_Click(null, null);
-                
+
             saved = true;
         }
 
@@ -93,14 +90,14 @@ namespace Favo
         private void ÖffnenToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             CheckSavedStatus();
-            
+
             // Get file path from LoadFileDialog, read file from path and set TextEditorBox.Text to Filetext
             string s = Dialog.LoadFileDialog();
             openPath = s;
 
             if (s != null)
                 TextEditorBox.Text = String.Join(System.Environment.NewLine, FileHandler.GetFileContent(s));
-            
+
             saved = true;
         }
 
@@ -110,26 +107,35 @@ namespace Favo
             openPath = null;
             CheckSavedStatus();
             TextEditorBox.Text = "";
-            
+
             saved = true;
         }
-        
-        
+
+
         //Event Handler for the "Run" item in the MenuStrip, compiles and runs the program
         private void RunToolStripMenuItemClick(object sender, System.EventArgs e)
         {
-            rM = new RegisterMachine(TextEditorBox.Text.Split('\n').ToList());
-            rM.ExecuteRegisterMachine(false);
+            try
+            {
+                rM = new RegisterMachine(TextEditorBox.Text.Split('\n').ToList());
+                rM.ExecuteRegisterMachine(false);
+            }
+            catch (Exception exception)
+            {
+                ErrorBox.Text = exception.Message;
+            }
+            
+            UpdateLabels();
             UpdateDataGridView();
         }
 
-        
+
         //Event Handler for the "imode"item in the MenuStrip, switches between if-modes
         void ImodeToolStripMenuItemClick(object sender, EventArgs e)
         {
-        	
+
         }
-        
+
         // Event Handler for the "Schließen" item from the MenuStrip
         private void CloseButton_Click(object sender, EventArgs e)
         {
@@ -137,6 +143,10 @@ namespace Favo
             Application.Exit();
         }
 
+
+        #region MovableWindow
+
+        //Panels can be used to move the Window
         private void Panel1_MouseDown(object sender, MouseEventArgs e)
         {
             mouseLocation = new Point(-e.X, -e.Y);
@@ -151,30 +161,68 @@ namespace Favo
                 Location = mousePosition;
             }
         }
-        
-	    // Event Handler for the "TextBox" item, if it's changed
+
+        #endregion 
+
+        // Event Handler for the "TextBox" item, if it's changed
         void TextEditorBoxTextChanged(object sender, EventArgs e)
         {
+            if (TextEditorBox.Lines.Length >= codelines.Lines.Length)
+            {
+                codelines.Text = "";
+                for (int i = 1; i <= TextEditorBox.Lines.Length; i++)
+                {       
+                    codelines.Text += i + Environment.NewLine;
+                }
+            }
+            else if (TextEditorBox.Lines.Length < codelines.Lines.Length)
+            {
+                codelines.Text = "";
+                for (int i = 1; i <= TextEditorBox.Lines.Length; i++)
+                {
+                    codelines.Text += i + Environment.NewLine;
+                }
+            }
+
+           
+
             saved = false;
         }
-	
-	    // Method to check, if latest changes are saved. Shows MessageBox.
-	    /// <summary>
+
+        // Method to check, if latest changes are saved. Shows MessageBox.
+        /// <summary>
         /// Checks if latest changes are saved.
         /// </summary>
         void CheckSavedStatus()
         {
             if (!saved)
             {
-        	    DialogResult dialogResult = MessageBox.Show("Änderungen am Code speichern?", "Ungespeicherte Änderungen",
-        		MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
-        		
-		        if(dialogResult == DialogResult.Yes)
-			        SaveToolStripMenuItem_Click(null, null);
+                DialogResult dialogResult = MessageBox.Show("Änderungen am Code speichern?", "Ungespeicherte Änderungen",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+
+                if (dialogResult == DialogResult.Yes)
+                    SaveToolStripMenuItem_Click(null, null);
             }
         }
 
         #endregion
+
+
+        /*private void TextEditorBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                codelines.Text += TextEditorBox.Lines.Length.ToString() + Environment.NewLine;
+            }   
+        }*/
+
+
+        // Update Variable Labels
+        private void UpdateLabels()
+        {
+            labelaccumulator.Text = rM.Accumulator.ToString();
+            labeloperations.Text = rM.InstructionCounter.ToString();
+        }
 
         /// <summary>
         /// Updates DataGridView2 to show values of registers
