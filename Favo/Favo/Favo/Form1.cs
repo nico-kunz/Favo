@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -12,12 +13,17 @@ namespace Favo
 {
     public partial class Form1 : Form
     {
+        #region Variables
         public Point mouseLocation;
         Registers register;
         RegisterMachine rM;
         private static string openPath;
         private DataTable dt;
-        bool saved, iMode;
+        bool saved, ifMode; //ifMode indicates whether simple if is used instead of complex if (replaces IF,IIF,CIF)
+
+        const int EM_LINESCROLL = 0x00B6;
+
+        #endregion
 
         // custom colorTable class for MenuStrip (custom appearance)
         public class CustomColorTable : ProfessionalColorTable
@@ -25,6 +31,7 @@ namespace Favo
             public override Color MenuItemSelected { get { return Color.FromArgb(44, 47, 51); } }
             public override Color MenuItemBorder { get { return Color.FromArgb(114, 137, 218); } }
         }
+
 
         // Constructor, initialize important components and variables 
         public Form1()
@@ -36,7 +43,7 @@ namespace Favo
             register = new Registers();
             dt = new DataTable();
             saved = true;
-            iMode = false;
+            ifMode = false;
 
             // Columns
             dt.Columns.Add("Index");
@@ -69,7 +76,7 @@ namespace Favo
             openPath = s;
 
             if (s != null)
-                FileHandler.SaveFileContent(s, TextEditorBox.Text);
+                FileHandler.SaveFileContent(s, textEditorBox.Text);
 
             saved = true;
 
@@ -80,7 +87,7 @@ namespace Favo
         {
             // Execute SaveAs method when openPath not initialized
             if (openPath != null)
-                FileHandler.SaveFileContent(openPath, TextEditorBox.Text);
+                FileHandler.SaveFileContent(openPath, textEditorBox.Text);
             else
                 SaveAsToolStripMenuItem_Click(null, null);
 
@@ -97,7 +104,7 @@ namespace Favo
             openPath = s;
 
             if (s != null)
-                TextEditorBox.Text = String.Join(System.Environment.NewLine, FileHandler.GetFileContent(s));
+                textEditorBox.Text = String.Join(System.Environment.NewLine, FileHandler.GetFileContent(s));
 
             saved = true;
         }
@@ -107,7 +114,7 @@ namespace Favo
         {
             openPath = null;
             CheckSavedStatus();
-            TextEditorBox.Text = "";
+            textEditorBox.Text = "";
 
             saved = true;
         }
@@ -116,16 +123,16 @@ namespace Favo
         //Event Handler for the "Run" item in the MenuStrip, compiles and runs the program
         private void RunToolStripMenuItemClick(object sender, System.EventArgs e)
         {
-            ErrorBox.Text = "";
+            errorBox.Text = "";
 
             try
             {
-                rM = new RegisterMachine(TextEditorBox.Text.Split('\n').ToList());
+                rM = new RegisterMachine(textEditorBox.Text.Split('\n').ToList());
                 rM.ExecuteRegisterMachine(false);
             }
             catch (Exception exception)
             {
-                ErrorBox.Text = exception.Message;
+                errorBox.Text = exception.Message;
             }
             
             UpdateLabels();
@@ -136,11 +143,17 @@ namespace Favo
 
 
         //Event Handler for the "imode"item in the MenuStrip, switches between if-modes
-        void ImodeToolStripMenuItemClick(object sender, EventArgs e)
+        void IfModeToolStripMenuItemClick(object sender, EventArgs e)
         {
-            rM.ExecuteOneStep();
-            UpdateLabels();
-            UpdateDataGridView();
+            ifMode = !ifMode;
+            if (ifMode == true)
+            {
+                ifModeToolStripMenuItem.Image = global::Favo.Properties.Resources.SyncArrowRed_16x;
+            }
+            else if (ifMode == false)
+            {
+                ifModeToolStripMenuItem.Image = global::Favo.Properties.Resources.SyncArrow_16x;
+            }
         }
 
         // Event Handler for the "Schließen" item from the MenuStrip
@@ -150,7 +163,7 @@ namespace Favo
             Application.Exit();
         }
 
-
+        // Form1 has no FormBorderStyle, this makes up for the missing dragability. Resize could be added.
         #region MovableWindow
 
         //Panels can be used to move the Window
@@ -174,27 +187,28 @@ namespace Favo
         // Event Handler for the "TextBox" item, if it's changed
         void TextEditorBoxTextChanged(object sender, EventArgs e)
         {
-            if (TextEditorBox.Lines.Length >= codelines.Lines.Length)
+            if (textEditorBox.Lines.Length >= codelines.Lines.Length)
             {
                 codelines.Text = "";
-                for (int i = 1; i <= TextEditorBox.Lines.Length; i++)
+                for (int i = 1; i <= textEditorBox.Lines.Length; i++)
                 {       
                     codelines.Text += i + Environment.NewLine;
                 }
             }
-            else if (TextEditorBox.Lines.Length < codelines.Lines.Length)
+            else if (textEditorBox.Lines.Length < codelines.Lines.Length)
             {
                 codelines.Text = "";
-                for (int i = 1; i <= TextEditorBox.Lines.Length; i++)
+                for (int i = 1; i <= textEditorBox.Lines.Length; i++)
                 {
                     codelines.Text += i + Environment.NewLine;
                 }
             }
 
-           
+            ScrollTo(GetScrollPos(textEditorBox.Handle, 1));
 
             saved = false;
         }
+
 
         // Method to check, if latest changes are saved. Shows MessageBox.
         /// <summary>
@@ -212,16 +226,50 @@ namespace Favo
             }
         }
 
+        private void StepByStepToolStripMenuItem_Click(object sender, EventArgs e)
+                {
+                    rM.ExecuteOneStep();
+                    UpdateLabels();
+                    UpdateDataGridView();
+                }
+
+        // Update Scrollbar pos
+        private void TextEditorBox_VScroll(object sender, EventArgs e)
+        {           
+            ScrollTo(GetScrollPos(textEditorBox.Handle, 1));
+        }
+
+        //changes focus to textEditorBox when Codelines somehow enters focus
+        private void Codelines_Enter(object sender, EventArgs e)
+        {
+            textEditorBox.Focus();
+        }
+
+
+
         #endregion
 
+        #region ScrollSync
 
-        /*private void TextEditorBox_KeyDown(object sender, KeyEventArgs e)
+        [DllImport("user32.dll")]
+        static extern int SetScrollPos(IntPtr hWnd, int nbar, int nPos, bool bRedraw);
+
+        [DllImport("user32.dll", EntryPoint = "PostMessageA")]
+        static extern bool PostMessage(IntPtr hWnd, uint msg, int wParam, int lParam);
+
+        [DllImport("user32.dll")]
+        static extern int GetScrollPos(IntPtr hWnd, int nBar);  
+
+        public void ScrollTo(int pos)
         {
-            if (e.KeyCode == Keys.Enter)
-            {
-                codelines.Text += TextEditorBox.Lines.Length.ToString() + Environment.NewLine;
-            }   
-        }*/
+            SetScrollPos(codelines.Handle, 0x1, pos, true);
+            PostMessage(codelines.Handle, 0x115, 4 + 0x10000 * pos, 0);
+        }
+
+        #endregion
+
+        #region Updates
+
 
 
         // Update Variable Labels
@@ -230,6 +278,9 @@ namespace Favo
             labelaccumulator.Text = rM.Accumulator.ToString();
             labeloperations.Text = rM.InstructionCounter.ToString();
         }
+
+        
+
 
         /// <summary>
         /// Updates DataGridView2 to show values of registers
@@ -243,5 +294,7 @@ namespace Favo
                 dt.Rows.Add(i.ToString(), rM.Heap[i]);
             }
         }
+        #endregion
+
     }
 }

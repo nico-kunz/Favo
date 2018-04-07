@@ -363,7 +363,7 @@ namespace Favo
                 // throw exception if more than one whitespace
                 if (parts.Length != 2)
                 {
-                    throw new Exception("Too many whitespace at line " + (counter).ToString());
+                    throw new Exception("Too many whitespaces at line " + (counter).ToString());
                 }
 
 

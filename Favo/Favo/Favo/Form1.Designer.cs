@@ -33,18 +33,18 @@ namespace Favo
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.TextEditorBox = new System.Windows.Forms.TextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.codelines = new System.Windows.Forms.TextBox();
+            this.codelines = new System.Windows.Forms.RichTextBox();
+            this.textEditorBox = new System.Windows.Forms.RichTextBox();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.ExitButton = new System.Windows.Forms.Button();
+            this.exitButton = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -54,13 +54,14 @@ namespace Favo
             this.saveasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.runToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.imodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.stepByStepToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ifModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel4 = new System.Windows.Forms.Panel();
             this.labeloperations = new System.Windows.Forms.Label();
             this.labelOp = new System.Windows.Forms.Label();
             this.labelaccumulator = new System.Windows.Forms.Label();
             this.labelAcc = new System.Windows.Forms.Label();
-            this.ErrorBox = new System.Windows.Forms.TextBox();
+            this.errorBox = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -74,29 +75,6 @@ namespace Favo
             this.panel4.SuspendLayout();
             this.SuspendLayout();
             // 
-            // TextEditorBox
-            // 
-            this.TextEditorBox.AutoCompleteCustomSource.AddRange(new string[] {
-            "Lukas",
-            "Max",
-            "Jan",
-            "Leon",
-            "Nico"});
-            this.TextEditorBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.TextEditorBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
-            this.TextEditorBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(39)))), ((int)(((byte)(42)))));
-            this.TextEditorBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.TextEditorBox.Dock = System.Windows.Forms.DockStyle.Right;
-            this.TextEditorBox.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.TextEditorBox.ForeColor = System.Drawing.Color.White;
-            this.TextEditorBox.Location = new System.Drawing.Point(86, 5);
-            this.TextEditorBox.Multiline = true;
-            this.TextEditorBox.Name = "TextEditorBox";
-            this.TextEditorBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.TextEditorBox.Size = new System.Drawing.Size(477, 343);
-            this.TextEditorBox.TabIndex = 0;
-            this.TextEditorBox.TextChanged += new System.EventHandler(this.TextEditorBoxTextChanged);
-            // 
             // splitContainer1
             // 
             this.splitContainer1.Location = new System.Drawing.Point(105, 76);
@@ -105,7 +83,7 @@ namespace Favo
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Controls.Add(this.codelines);
-            this.splitContainer1.Panel1.Controls.Add(this.TextEditorBox);
+            this.splitContainer1.Panel1.Controls.Add(this.textEditorBox);
             this.splitContainer1.Panel1.Padding = new System.Windows.Forms.Padding(5);
             // 
             // splitContainer1.Panel2
@@ -119,17 +97,38 @@ namespace Favo
             // 
             // codelines
             // 
-            this.codelines.BackColor = System.Drawing.Color.YellowGreen;
+            this.codelines.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(39)))), ((int)(((byte)(42)))));
             this.codelines.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.codelines.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.codelines.Cursor = System.Windows.Forms.Cursors.Default;
+            this.codelines.Dock = System.Windows.Forms.DockStyle.Left;
             this.codelines.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.codelines.ForeColor = System.Drawing.Color.White;
             this.codelines.Location = new System.Drawing.Point(5, 5);
-            this.codelines.Margin = new System.Windows.Forms.Padding(5);
-            this.codelines.Multiline = true;
             this.codelines.Name = "codelines";
-            this.codelines.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.codelines.Size = new System.Drawing.Size(81, 343);
-            this.codelines.TabIndex = 9;
+            this.codelines.ReadOnly = true;
+            this.codelines.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
+            this.codelines.Size = new System.Drawing.Size(56, 343);
+            this.codelines.TabIndex = 11;
+            this.codelines.TabStop = false;
+            this.codelines.Text = "";
+            this.codelines.Click += new System.EventHandler(this.Codelines_Enter);
+            this.codelines.Enter += new System.EventHandler(this.Codelines_Enter);
+            // 
+            // textEditorBox
+            // 
+            this.textEditorBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(39)))), ((int)(((byte)(42)))));
+            this.textEditorBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textEditorBox.Dock = System.Windows.Forms.DockStyle.Right;
+            this.textEditorBox.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.textEditorBox.ForeColor = System.Drawing.Color.White;
+            this.textEditorBox.Location = new System.Drawing.Point(67, 5);
+            this.textEditorBox.Name = "textEditorBox";
+            this.textEditorBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+            this.textEditorBox.Size = new System.Drawing.Size(496, 343);
+            this.textEditorBox.TabIndex = 10;
+            this.textEditorBox.Text = "";
+            this.textEditorBox.VScroll += new System.EventHandler(this.TextEditorBox_VScroll);
+            this.textEditorBox.TextChanged += new System.EventHandler(this.TextEditorBoxTextChanged);
             // 
             // dataGridView2
             // 
@@ -140,37 +139,37 @@ namespace Favo
             this.dataGridView2.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView2.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(47)))), ((int)(((byte)(51)))));
             this.dataGridView2.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(47)))), ((int)(((byte)(51)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10F);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(234)))), ((int)(((byte)(86)))), ((int)(((byte)(51)))));
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView2.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(47)))), ((int)(((byte)(51)))));
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Segoe UI", 10F);
+            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(234)))), ((int)(((byte)(86)))), ((int)(((byte)(51)))));
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView2.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView2.Cursor = System.Windows.Forms.Cursors.Default;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(47)))), ((int)(((byte)(51)))));
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 10F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(234)))), ((int)(((byte)(86)))), ((int)(((byte)(51)))));
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView2.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(47)))), ((int)(((byte)(51)))));
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Segoe UI", 10F);
+            dataGridViewCellStyle8.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(234)))), ((int)(((byte)(86)))), ((int)(((byte)(51)))));
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView2.DefaultCellStyle = dataGridViewCellStyle8;
             this.dataGridView2.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dataGridView2.EnableHeadersVisualStyles = false;
             this.dataGridView2.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(39)))), ((int)(((byte)(42)))));
             this.dataGridView2.Location = new System.Drawing.Point(5, 5);
             this.dataGridView2.Name = "dataGridView2";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView2.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView2.RowHeadersDefaultCellStyle = dataGridViewCellStyle9;
             this.dataGridView2.RowHeadersVisible = false;
             this.dataGridView2.ShowCellToolTips = false;
             this.dataGridView2.ShowEditingIcon = false;
@@ -190,7 +189,7 @@ namespace Favo
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(234)))), ((int)(((byte)(86)))), ((int)(((byte)(51)))));
             this.panel1.Controls.Add(this.pictureBox1);
-            this.panel1.Controls.Add(this.ExitButton);
+            this.panel1.Controls.Add(this.exitButton);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
@@ -211,22 +210,22 @@ namespace Favo
             this.pictureBox1.TabIndex = 9;
             this.pictureBox1.TabStop = false;
             // 
-            // ExitButton
+            // exitButton
             // 
-            this.ExitButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(234)))), ((int)(((byte)(86)))), ((int)(((byte)(51)))));
-            this.ExitButton.Dock = System.Windows.Forms.DockStyle.Right;
-            this.ExitButton.FlatAppearance.BorderSize = 0;
-            this.ExitButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Red;
-            this.ExitButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ExitButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ExitButton.ForeColor = System.Drawing.Color.White;
-            this.ExitButton.Location = new System.Drawing.Point(1199, 0);
-            this.ExitButton.Name = "ExitButton";
-            this.ExitButton.Size = new System.Drawing.Size(24, 24);
-            this.ExitButton.TabIndex = 8;
-            this.ExitButton.Text = "X";
-            this.ExitButton.UseVisualStyleBackColor = false;
-            this.ExitButton.Click += new System.EventHandler(this.CloseButton_Click);
+            this.exitButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(234)))), ((int)(((byte)(86)))), ((int)(((byte)(51)))));
+            this.exitButton.Dock = System.Windows.Forms.DockStyle.Right;
+            this.exitButton.FlatAppearance.BorderSize = 0;
+            this.exitButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Red;
+            this.exitButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.exitButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.exitButton.ForeColor = System.Drawing.Color.White;
+            this.exitButton.Location = new System.Drawing.Point(1199, 0);
+            this.exitButton.Name = "exitButton";
+            this.exitButton.Size = new System.Drawing.Size(24, 24);
+            this.exitButton.TabIndex = 8;
+            this.exitButton.Text = "X";
+            this.exitButton.UseVisualStyleBackColor = false;
+            this.exitButton.Click += new System.EventHandler(this.CloseButton_Click);
             // 
             // panel2
             // 
@@ -259,7 +258,8 @@ namespace Favo
             this.saveasToolStripMenuItem,
             this.toolStripMenuItem1,
             this.runToolStripMenuItem,
-            this.imodeToolStripMenuItem});
+            this.stepByStepToolStripMenuItem,
+            this.ifModeToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Margin = new System.Windows.Forms.Padding(1);
             this.menuStrip1.Name = "menuStrip1";
@@ -327,14 +327,22 @@ namespace Favo
             this.runToolStripMenuItem.ToolTipText = "Run (F5)";
             this.runToolStripMenuItem.Click += new System.EventHandler(this.RunToolStripMenuItemClick);
             // 
-            // imodeToolStripMenuItem
+            // stepByStepToolStripMenuItem
             // 
-            this.imodeToolStripMenuItem.AutoToolTip = true;
-            this.imodeToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("imodeToolStripMenuItem.Image")));
-            this.imodeToolStripMenuItem.Name = "imodeToolStripMenuItem";
-            this.imodeToolStripMenuItem.Size = new System.Drawing.Size(29, 20);
-            this.imodeToolStripMenuItem.ToolTipText = "Switch if-Mode";
-            this.imodeToolStripMenuItem.Click += new System.EventHandler(this.ImodeToolStripMenuItemClick);
+            this.stepByStepToolStripMenuItem.Image = global::Favo.Properties.Resources.Step_16x;
+            this.stepByStepToolStripMenuItem.Name = "stepByStepToolStripMenuItem";
+            this.stepByStepToolStripMenuItem.Size = new System.Drawing.Size(29, 20);
+            this.stepByStepToolStripMenuItem.ToolTipText = "Run step by step";
+            this.stepByStepToolStripMenuItem.Click += new System.EventHandler(this.StepByStepToolStripMenuItem_Click);
+            // 
+            // ifModeToolStripMenuItem
+            // 
+            this.ifModeToolStripMenuItem.AutoToolTip = true;
+            this.ifModeToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("ifModeToolStripMenuItem.Image")));
+            this.ifModeToolStripMenuItem.Name = "ifModeToolStripMenuItem";
+            this.ifModeToolStripMenuItem.Size = new System.Drawing.Size(29, 20);
+            this.ifModeToolStripMenuItem.ToolTipText = "Switch if-Mode";
+            this.ifModeToolStripMenuItem.Click += new System.EventHandler(this.IfModeToolStripMenuItemClick);
             // 
             // panel4
             // 
@@ -342,7 +350,7 @@ namespace Favo
             this.panel4.Controls.Add(this.labelOp);
             this.panel4.Controls.Add(this.labelaccumulator);
             this.panel4.Controls.Add(this.labelAcc);
-            this.panel4.Controls.Add(this.ErrorBox);
+            this.panel4.Controls.Add(this.errorBox);
             this.panel4.Location = new System.Drawing.Point(105, 438);
             this.panel4.Name = "panel4";
             this.panel4.Padding = new System.Windows.Forms.Padding(5);
@@ -395,21 +403,22 @@ namespace Favo
             this.labelAcc.TabIndex = 1;
             this.labelAcc.Text = "Accumulator:";
             // 
-            // ErrorBox
+            // errorBox
             // 
-            this.ErrorBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(47)))), ((int)(((byte)(51)))));
-            this.ErrorBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.ErrorBox.Cursor = System.Windows.Forms.Cursors.No;
-            this.ErrorBox.Dock = System.Windows.Forms.DockStyle.Left;
-            this.ErrorBox.Font = new System.Drawing.Font("Lucida Console", 10F);
-            this.ErrorBox.ForeColor = System.Drawing.Color.White;
-            this.ErrorBox.Location = new System.Drawing.Point(5, 5);
-            this.ErrorBox.Multiline = true;
-            this.ErrorBox.Name = "ErrorBox";
-            this.ErrorBox.ReadOnly = true;
-            this.ErrorBox.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
-            this.ErrorBox.Size = new System.Drawing.Size(771, 114);
-            this.ErrorBox.TabIndex = 0;
+            this.errorBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(47)))), ((int)(((byte)(51)))));
+            this.errorBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.errorBox.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.errorBox.Dock = System.Windows.Forms.DockStyle.Left;
+            this.errorBox.Font = new System.Drawing.Font("Lucida Console", 10F);
+            this.errorBox.ForeColor = System.Drawing.Color.White;
+            this.errorBox.Location = new System.Drawing.Point(5, 5);
+            this.errorBox.Multiline = true;
+            this.errorBox.Name = "errorBox";
+            this.errorBox.ReadOnly = true;
+            this.errorBox.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
+            this.errorBox.Size = new System.Drawing.Size(771, 114);
+            this.errorBox.TabIndex = 0;
+            this.errorBox.TabStop = false;
             // 
             // Form1
             // 
@@ -428,7 +437,6 @@ namespace Favo
             this.Name = "Form1";
             this.Text = "Favo";
             this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
@@ -445,9 +453,9 @@ namespace Favo
             this.ResumeLayout(false);
 
         }
-        private System.Windows.Forms.ToolStripMenuItem imodeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ifModeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem runToolStripMenuItem;
-        private System.Windows.Forms.Button ExitButton;
+        private System.Windows.Forms.Button exitButton;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem saveasToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
@@ -455,8 +463,6 @@ namespace Favo
         private System.Windows.Forms.ToolStripMenuItem neuToolStripMenuItem1;
 
         #endregion
-
-        private System.Windows.Forms.TextBox TextEditorBox;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private Panel panel1;
         private Panel panel2;
@@ -466,12 +472,14 @@ namespace Favo
         private PictureBox pictureBox1;
         private DataGridView dataGridView2;
         private Panel panel4;
-        private TextBox ErrorBox;
+        private TextBox errorBox;
         private Label labelaccumulator;
         private Label labelAcc;
         private Label labeloperations;
         private Label labelOp;
-        private TextBox codelines;
+        private ToolStripMenuItem stepByStepToolStripMenuItem;
+        private RichTextBox textEditorBox;
+        private RichTextBox codelines;
     }
 }
 
