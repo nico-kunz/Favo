@@ -44,7 +44,9 @@ namespace Favo
             IF,
             CIF,
             IIF,
-            GIF,
+            GIFSM,
+            GIFBIG,
+
 
             NULL
 
@@ -103,6 +105,13 @@ namespace Favo
             for(; InstructionPointer <= Operations.Count; InstructionPointer++)
                 ExecuteStep(Operations[InstructionPointer - 1].operationCode, Operations[InstructionPointer - 1].argument);
 
+            
+        }
+        public bool ExecuteOneStep()
+        {
+            ExecuteStep(Operations[InstructionPointer - 1].operationCode, Operations[InstructionPointer - 1].argument);
+            InstructionPointer++;
+            return true;
         }
 
         private bool ExecuteStep(OperationCode opcode, int argument)
@@ -201,9 +210,16 @@ namespace Favo
                         InstructionPointer++;
                     break;
 
-                case OperationCode.GIF:
-                    // stupid if
+                case OperationCode.GIFBIG:
+                    if (!(Accumulator > Heap[argument]))
+                        InstructionPointer++;
                     break;
+
+                case OperationCode.GIFSM:
+                    if (!(Accumulator < Heap[argument]))
+                        InstructionPointer++;
+                    break;
+
 
 
 
@@ -317,8 +333,11 @@ namespace Favo
                     case "iif":
                         opcode = OperationCode.IIF;
                         break;
-                    case "gif":
-                        opcode = OperationCode.GIF;
+                    case "gif<":
+                        opcode = OperationCode.GIFSM;
+                        break;
+                    case "gif>":
+                        opcode = OperationCode.GIFBIG;
                         break;
                     default:
                         // if last character :
@@ -338,13 +357,13 @@ namespace Favo
                             continue;
                         }
                         else
-                            throw new Exception("Unknown command at line " + (counter + 1).ToString());
+                            throw new Exception("Unknown command at line " + (counter).ToString());
                 }
 
                 // throw exception if more than one whitespace
                 if (parts.Length != 2)
                 {
-                    throw new Exception("Too many whitespace at line " + (counter + 1).ToString());
+                    throw new Exception("Too many whitespace at line " + (counter).ToString());
                 }
 
 
@@ -360,6 +379,14 @@ namespace Favo
                 // Increment instruction counter for each new instruction
                 counter++;
             }
+        }
+
+        public void ResetState()
+        {
+            Accumulator = 0;
+            Heap = new Registers();
+            InstructionCounter = 0;
+            InstructionPointer = 1;
         }
     }
 }

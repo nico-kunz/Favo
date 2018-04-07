@@ -17,7 +17,7 @@ namespace Favo
         RegisterMachine rM;
         private static string openPath;
         private DataTable dt;
-        bool saved;
+        bool saved, iMode;
 
         // custom colorTable class for MenuStrip (custom appearance)
         public class CustomColorTable : ProfessionalColorTable
@@ -36,6 +36,7 @@ namespace Favo
             register = new Registers();
             dt = new DataTable();
             saved = true;
+            iMode = false;
 
             // Columns
             dt.Columns.Add("Index");
@@ -115,6 +116,8 @@ namespace Favo
         //Event Handler for the "Run" item in the MenuStrip, compiles and runs the program
         private void RunToolStripMenuItemClick(object sender, System.EventArgs e)
         {
+            ErrorBox.Text = "";
+
             try
             {
                 rM = new RegisterMachine(TextEditorBox.Text.Split('\n').ToList());
@@ -127,13 +130,17 @@ namespace Favo
             
             UpdateLabels();
             UpdateDataGridView();
+
+            rM.ResetState();
         }
 
 
         //Event Handler for the "imode"item in the MenuStrip, switches between if-modes
         void ImodeToolStripMenuItemClick(object sender, EventArgs e)
         {
-
+            rM.ExecuteOneStep();
+            UpdateLabels();
+            UpdateDataGridView();
         }
 
         // Event Handler for the "Schließen" item from the MenuStrip
