@@ -39,13 +39,24 @@ namespace Favo
             DIV,
             CDIV,
             IDIV,
+
+            IGOTO,
             GOTO,
             END,
+
             IF,
+            IFBIG,
+            IFSM,
+
             CIF,
+            CIFBIG,
+            CIFSM,
+
             IIF,
-            GIFSM,
-            GIFBIG,
+            IIFBIG,
+            IIFSM,
+
+            GIF,
 
 
             NULL
@@ -202,34 +213,74 @@ namespace Favo
                     InstructionPointer = argument - 1;
                     break;
 
+                case OperationCode.IGOTO:
+                    InstructionPointer = Heap[argument] - 1;
+                    break;
+
+
                 case OperationCode.END:
                     return false;
+
+                    ////////////////////////////////////////////////////////////////////
+                    
 
                 case OperationCode.IF:
                     if (Accumulator != Heap[argument])
                         InstructionPointer++;
                     break;
 
+                case OperationCode.IFBIG:
+                    if (!(Accumulator > Heap[argument]))
+                        InstructionPointer++;
+                    break;
+
+                case OperationCode.IFSM:
+                    if (!(Accumulator < Heap[argument]))
+                        InstructionPointer++;
+                    break;
+
+
                 case OperationCode.CIF:
                     if (Accumulator != argument)
                         InstructionPointer++;
                     break;
+
+                case OperationCode.CIFBIG:
+                    if (!(Accumulator > argument))
+                        InstructionPointer++;
+                    break;
+
+                case OperationCode.CIFSM:
+                    if (!(Accumulator < argument))
+                        InstructionPointer++;
+                    break;
+
+                
 
                 case OperationCode.IIF:
                     if (Accumulator != Heap[Heap[argument]])
                         InstructionPointer++;
                     break;
 
-                case OperationCode.GIFBIG:
-                    if (!(Accumulator > Heap[argument]))
+                case OperationCode.IIFBIG:
+                    if (!(Accumulator > Heap[Heap[argument]]))
                         InstructionPointer++;
                     break;
 
-                case OperationCode.GIFSM:
-                    if (!(Accumulator < Heap[argument]))
+                case OperationCode.IIFSM:
+                    if (!(Accumulator < Heap[Heap[argument]]))
                         InstructionPointer++;
                     break;
 
+
+
+
+
+                case OperationCode.GIF:
+                    if (Accumulator != 0)
+                        InstructionPointer++;
+                    break;
+                    /////////////////////////////////////////////////////////////////
 
 
 
@@ -262,7 +313,9 @@ namespace Favo
                 // ignore empty lines of code
                 if(string.IsNullOrWhiteSpace(item))
                 {
+                    Operations.Add(new Operation(InstructionPointer, OperationCode.NULL, 0));
                     counter++;
+
                     continue;
                 }
             		
@@ -286,77 +339,127 @@ namespace Favo
                     case "load":
                         opcode = OperationCode.LOAD;
                         break;
+
                     case "cload":
                         opcode = OperationCode.CLOAD;
                         break;
+
                     case "iload":
                         opcode = OperationCode.ILOAD;
                         break;
+
                     case "store":
                         opcode = OperationCode.STORE;
                         break;
+
                     case "istore":
                         opcode = OperationCode.ISTORE;
                         break;
+
                     case "add":
                         opcode = OperationCode.ADD;
                         break;
+
                     case "cadd":
                         opcode = OperationCode.CADD;
                         break;
+
                     case "iadd":
                         opcode = OperationCode.IADD;
                         break;
+
                     case "sub":
                         opcode = OperationCode.SUB;
                         break;
+
                     case "csub":
                         opcode = OperationCode.CSUB;
                         break;
+
                     case "isub":
                         opcode = OperationCode.ISUB;
                         break;
+
                     case "mul":
                         opcode = OperationCode.MUL;
                         break;
+
                     case "cmul":
                         opcode = OperationCode.CMUL;
                         break;
+
                     case "imul":
                         opcode = OperationCode.IMUL;
                         break;
+
                     case "div":
                         opcode = OperationCode.DIV;
                         break;
+
                     case "cdiv":
                         opcode = OperationCode.CDIV;
                         break;
+
                     case "idiv":
                         opcode = OperationCode.IDIV;
                         break;
+
                     case "goto":
                         opcode = OperationCode.GOTO;
                         break;
+
+                    case "igoto":
+                        opcode = OperationCode.IGOTO;
+                        break;
+
                     case "end":
                         opcode = OperationCode.END;
                         Operations.Add(new Operation(counter, opcode, 0));
                         counter++;
                         continue;
+
                     case "if":
                         opcode = OperationCode.IF;
                         break;
+
+                    case "if<":
+                        opcode = OperationCode.IFSM;
+                        break;
+
+                    case "if>":
+                        opcode = OperationCode.IFBIG;
+                        break;
+
                     case "cif":
                         opcode = OperationCode.CIF;
                         break;
+
+                    case "cif<":
+                        opcode = OperationCode.CIFSM;
+                        break;
+
+                    case "cif>":
+                        opcode = OperationCode.CIFBIG;
+                        break;
+
                     case "iif":
                         opcode = OperationCode.IIF;
                         break;
-                    case "gif<":
-                        opcode = OperationCode.GIFSM;
+
+                    case "iif<":
+                        opcode = OperationCode.IIFSM;
                         break;
-                    case "gif>":
-                        opcode = OperationCode.GIFBIG;
+
+                    case "iif>":
+                        opcode = OperationCode.IIFBIG;
                         break;
+
+                    case "gif":
+                        opcode = OperationCode.GIF;
+                        Operations.Add(new Operation(counter, opcode, 0));
+                        counter++;
+                        continue;
+
                     default:
                         // if last character :
                         if(parts[0].Substring(parts[0].Length - 1) == ":")
