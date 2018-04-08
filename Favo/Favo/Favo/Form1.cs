@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Favo
@@ -150,14 +147,16 @@ namespace Favo
                 // Don't compile twice if code is already compiled
                 if(!compiled)
                 {
+                    errorBox.Text = "";
                     rM = new RegisterMachine(textEditorBox.Text.Split('\n').ToList());
                     compiled = true;
                 }
 
+                Highlight();
+
                 // Check if there are more steps available or end of code is reached
                 if (rM.ExecuteOneStep() == false)
                 {
-                    Highlight();
                     UpdateLabels();
                     UpdateDataGridView();
                     errorBox.Text = "Program execution finished!";
@@ -166,7 +165,6 @@ namespace Favo
                 }
                 else
                 {
-                    Highlight();
                     UpdateLabels();
                     UpdateDataGridView();
                 }
@@ -285,16 +283,20 @@ namespace Favo
 
         #endregion
 
-        // Update indicator for current line for step by step
+        /// <summary>
+        /// Update indicator for current line for step by step
+        /// </summary>
         private void Highlight()
-        {
+        {  
             UpdateCodelines();
-            codelines.Text = codelines.Text.Insert(codelines.Text.IndexOf((rM.InstructionPointer - 1).ToString()) + 1,  " <--"); //Text selection highlighting too complex and prone to bugs
+            codelines.Text = codelines.Text.Insert(codelines.Text.IndexOf((rM.InstructionPointer).ToString()) + 1,  " <--"); //Text selection highlighting too complex and prone to bugs
         }
 
         #region Updates
 
-        // Update Variable Labels
+        /// <summary>
+        /// Update Variable Labels
+        /// </summary>
         private void UpdateLabels()
         {
             labelaccumulator.Text = rM.Accumulator.ToString();

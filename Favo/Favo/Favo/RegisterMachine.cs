@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Favo
 {
@@ -217,12 +214,8 @@ namespace Favo
                     InstructionPointer = Heap[argument] - 1;
                     break;
 
-
                 case OperationCode.END:
                     return false;
-
-                    ////////////////////////////////////////////////////////////////////
-                    
 
                 case OperationCode.IF:
                     if (Accumulator != Heap[argument])
@@ -239,7 +232,6 @@ namespace Favo
                         InstructionPointer++;
                     break;
 
-
                 case OperationCode.CIF:
                     if (Accumulator != argument)
                         InstructionPointer++;
@@ -254,8 +246,6 @@ namespace Favo
                     if (!(Accumulator < argument))
                         InstructionPointer++;
                     break;
-
-                
 
                 case OperationCode.IIF:
                     if (Accumulator != Heap[Heap[argument]])
@@ -272,19 +262,10 @@ namespace Favo
                         InstructionPointer++;
                     break;
 
-
-
-
-
                 case OperationCode.GIF:
                     if (Accumulator != 0)
                         InstructionPointer++;
                     break;
-                    /////////////////////////////////////////////////////////////////
-
-
-
-
             }
 
 
@@ -464,12 +445,6 @@ namespace Favo
                         // if last character :
                         if(parts[0].Substring(parts[0].Length - 1) == ":")
                         {
-                           /* // Add Label name and line number to Dictionary
-                            Labels.Add(parts[0].Substring(0, parts[0].Length - 1), counter);
-
-                            foreach (var element in Labels)
-                                Console.WriteLine(element.ToString());
-                            */
                             // Add null operation to Operations to prevent gaps
                             Operations.Add(new Operation(counter, OperationCode.NULL, 0));
                             
@@ -502,6 +477,9 @@ namespace Favo
             }
         }
 
+        /// <summary>
+        /// Scan code for label definitions and add those to the dictionary Labels
+        /// </summary>
         private void ScanForLabels()
         {
             int counter = 1;
@@ -516,6 +494,9 @@ namespace Favo
             }
         }
 
+        /// <summary>
+        /// Reset all important variables of the register machine, for making it work again (without recompiling the code)
+        /// </summary>
         public void ResetState()
         {
             Accumulator = 0;
