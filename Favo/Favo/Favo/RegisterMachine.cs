@@ -13,7 +13,7 @@ namespace Favo
         private List<string> Code;
         private List<Operation> Operations;
         private Dictionary<string, int> Labels;
-        private int InstructionPointer;
+        public int InstructionPointer {get; private set;}
         public int InstructionCounter {get; private set;}
 
         #region DataStructures
