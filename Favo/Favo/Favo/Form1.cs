@@ -287,9 +287,11 @@ namespace Favo
         /// Update indicator for current line for step by step
         /// </summary>
         private void Highlight()
-        {  
+        {
             UpdateCodelines();
-            codelines.Text = codelines.Text.Insert(codelines.Text.IndexOf((rM.InstructionPointer).ToString()) + 1,  " <--"); //Text selection highlighting too complex and prone to bugs
+
+            //Insert arrow after linenumber, add instructionPointer length to insertion position because arrow should be inserted after the digits
+            codelines.Text = codelines.Text.Insert(codelines.Text.IndexOf((rM.InstructionPointer).ToString()) + rM.InstructionPointer.ToString().Length,  " <--"); //Text selection highlighting too complex and prone to bugs
         }
 
         #region Updates
