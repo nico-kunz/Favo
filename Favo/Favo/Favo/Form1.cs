@@ -120,7 +120,6 @@ namespace Favo
             saved = true;
         }
 
-
         //Event Handler for the "Run" item in the MenuStrip, compiles and runs the program
         private void RunToolStripMenuItemClick(object sender, System.EventArgs e)
         {
@@ -158,6 +157,7 @@ namespace Favo
                 // Check if there are more steps available or end of code is reached
                 if (rM.ExecuteOneStep() == false)
                 {
+                    Highlight();
                     UpdateLabels();
                     UpdateDataGridView();
                     errorBox.Text = "Program execution finished!";
@@ -166,6 +166,7 @@ namespace Favo
                 }
                 else
                 {
+                    Highlight();
                     UpdateLabels();
                     UpdateDataGridView();
                 }
@@ -175,7 +176,6 @@ namespace Favo
                 errorBox.Text = exc.Message;
             }
         }
-
 
         //Event handler for the "imode"item in the MenuStrip, switches between if-modes
         void IfModeToolStripMenuItemClick(object sender, EventArgs e)
@@ -225,25 +225,7 @@ namespace Favo
         // Event Handler for the "TextBox" item, if it's changed
         void TextEditorBoxTextChanged(object sender, EventArgs e)
         {
-            // compare textEditorBox number of lines with codelines number of lines
-            // add or remove linenumbers from codelinesTextBox if necessary
-            if (textEditorBox.Lines.Length >= codelines.Lines.Length)
-            {
-                codelines.Text = "";
-                for (int i = 1; i <= textEditorBox.Lines.Length; i++)
-                {       
-                    codelines.Text += i + Environment.NewLine;
-                }
-            }
-
-            else if (textEditorBox.Lines.Length < codelines.Lines.Length)
-            {
-                codelines.Text = "";
-                for (int i = 1; i <= textEditorBox.Lines.Length; i++)
-                {
-                    codelines.Text += i + Environment.NewLine;
-                }
-            }
+            UpdateCodelines();
 
             // scroll codelinesTextBox to the position of textEditorBox
             ScrollTo(GetScrollPos(textEditorBox.Handle, 1));
@@ -251,7 +233,6 @@ namespace Favo
             saved = false;
             compiled = false;
         }
-
 
         /// <summary>
         /// Checks if latest changes are saved.
@@ -304,6 +285,13 @@ namespace Favo
 
         #endregion
 
+        // Update indicator for current line for step by step
+        private void Highlight()
+        {
+            UpdateCodelines();
+            codelines.Text = codelines.Text.Insert(codelines.Text.IndexOf(rM.InstructionPointer.ToString())-1,  " <--"); //Text selection highlighting too complex and prone to bugs
+        }
+
         #region Updates
 
         // Update Variable Labels
@@ -313,6 +301,29 @@ namespace Favo
             labeloperations.Text = rM.InstructionCounter.ToString();
         }
 
+
+        // compare textEditorBox number of lines with codelines number of lines
+        // add or remove linenumbers from codelinesTextBox if necessary
+        private void UpdateCodelines()
+        {
+            if (textEditorBox.Lines.Length >= codelines.Lines.Length)
+            {
+                codelines.Text = "";
+                for (int i = 1; i <= textEditorBox.Lines.Length; i++)
+                {
+                    codelines.Text += i + Environment.NewLine;
+                }
+            }
+
+            else if (textEditorBox.Lines.Length < codelines.Lines.Length)
+            {
+                codelines.Text = "";
+                for (int i = 1; i <= textEditorBox.Lines.Length; i++)
+                {
+                    codelines.Text += i + Environment.NewLine;
+                }
+            }
+        }
 
         /// <summary>
         /// Updates DataGridView2 to show values of registers
