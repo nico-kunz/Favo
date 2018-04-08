@@ -19,7 +19,7 @@ namespace Favo
         RegisterMachine rM;
         private static string openPath;
         private DataTable dt;
-        bool saved, ifMode; //ifMode indicates whether simple if is used instead of complex if (replaces IF,IIF,CIF)
+        bool saved, compiled, ifMode; //ifMode indicates whether simple if is used instead of complex if (replaces IF,IIF,CIF)
 
         const int EM_LINESCROLL = 0x00B6;
 
@@ -43,6 +43,7 @@ namespace Favo
             register = new Registers();
             dt = new DataTable();
             saved = true;
+            compiled = false;
             ifMode = false;
 
             // Columns
@@ -128,6 +129,7 @@ namespace Favo
             try
             {
                 rM = new RegisterMachine(textEditorBox.Text.Split('\n').ToList());
+                compiled = true;
                 rM.ExecuteRegisterMachine(false);
             }
             catch (Exception exception)
@@ -141,11 +143,47 @@ namespace Favo
             rM.ResetState();
         }
 
+        // Event Handler for StepByStep ToolStripMenuItem, executes one line of code per click
+        private void StepByStepToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Don't compile twice if code is already compiled
+                if(!compiled)
+                {
+                    rM = new RegisterMachine(textEditorBox.Text.Split('\n').ToList());
+                    compiled = true;
+                }
 
-        //Event Handler for the "imode"item in the MenuStrip, switches between if-modes
+                // Check if there are more steps available or end of code is reached
+                if (rM.ExecuteOneStep() == false)
+                {
+                    UpdateLabels();
+                    UpdateDataGridView();
+                    errorBox.Text = "Program execution finished!";
+
+                    rM.ResetState();
+                }
+                else
+                {
+                    UpdateLabels();
+                    UpdateDataGridView();
+                }
+            }
+            catch (Exception exc)
+            {
+                errorBox.Text = exc.Message;
+            }
+        }
+
+
+        //Event handler for the "imode"item in the MenuStrip, switches between if-modes
         void IfModeToolStripMenuItemClick(object sender, EventArgs e)
         {
+            // Invert ifMode bool
             ifMode = !ifMode;
+
+            // Change icon of ifModeToolStripMenuItem according to ifMode bool value
             if (ifMode == true)
             {
                 ifModeToolStripMenuItem.Image = global::Favo.Properties.Resources.SyncArrowRed_16x;
@@ -156,7 +194,7 @@ namespace Favo
             }
         }
 
-        // Event Handler for the "Schließen" item from the MenuStrip
+        // Event Handler for the close button in the top right corner
         private void CloseButton_Click(object sender, EventArgs e)
         {
             CheckSavedStatus();
@@ -187,6 +225,8 @@ namespace Favo
         // Event Handler for the "TextBox" item, if it's changed
         void TextEditorBoxTextChanged(object sender, EventArgs e)
         {
+            // compare textEditorBox number of lines with codelines number of lines
+            // add or remove linenumbers from codelinesTextBox if necessary
             if (textEditorBox.Lines.Length >= codelines.Lines.Length)
             {
                 codelines.Text = "";
@@ -195,6 +235,7 @@ namespace Favo
                     codelines.Text += i + Environment.NewLine;
                 }
             }
+
             else if (textEditorBox.Lines.Length < codelines.Lines.Length)
             {
                 codelines.Text = "";
@@ -204,18 +245,20 @@ namespace Favo
                 }
             }
 
+            // scroll codelinesTextBox to the position of textEditorBox
             ScrollTo(GetScrollPos(textEditorBox.Handle, 1));
 
             saved = false;
+            compiled = false;
         }
 
 
-        // Method to check, if latest changes are saved. Shows MessageBox.
         /// <summary>
         /// Checks if latest changes are saved.
         /// </summary>
         void CheckSavedStatus()
         {
+            // check if latest changes are saved, show MessageBox.
             if (!saved)
             {
                 DialogResult dialogResult = MessageBox.Show("Änderungen am Code speichern?", "Ungespeicherte Änderungen",
@@ -226,31 +269,24 @@ namespace Favo
             }
         }
 
-        private void StepByStepToolStripMenuItem_Click(object sender, EventArgs e)
-                {
-                    rM.ExecuteOneStep();
-                    UpdateLabels();
-                    UpdateDataGridView();
-                }
-
+        
         // Update Scrollbar pos
         private void TextEditorBox_VScroll(object sender, EventArgs e)
         {           
             ScrollTo(GetScrollPos(textEditorBox.Handle, 1));
         }
 
-        //changes focus to textEditorBox when Codelines somehow enters focus
+        // Changes focus to textEditorBox when Codelines somehow enters focus
         private void Codelines_Enter(object sender, EventArgs e)
         {
             textEditorBox.Focus();
         }
 
-
-
         #endregion
 
         #region ScrollSync
 
+        // Imported windows functions for controlling scrollbars of control elements
         [DllImport("user32.dll")]
         static extern int SetScrollPos(IntPtr hWnd, int nbar, int nPos, bool bRedraw);
 
@@ -270,16 +306,12 @@ namespace Favo
 
         #region Updates
 
-
-
         // Update Variable Labels
         private void UpdateLabels()
         {
             labelaccumulator.Text = rM.Accumulator.ToString();
             labeloperations.Text = rM.InstructionCounter.ToString();
         }
-
-        
 
 
         /// <summary>

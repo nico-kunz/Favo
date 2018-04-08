@@ -31,7 +31,7 @@ namespace Favo
             set
             {
                 // resize list if index out of range and add value
-                if (register.Count < index)
+                if (register.Count <= index)
                 {
                     // add empty items between last element and wanted index
                     for (int i = register.Count; i < index; i++)
