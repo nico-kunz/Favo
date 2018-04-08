@@ -103,15 +103,25 @@ namespace Favo
         public void ExecuteRegisterMachine(bool stepByStep)
         {
             for(; InstructionPointer <= Operations.Count; InstructionPointer++)
-                ExecuteStep(Operations[InstructionPointer - 1].operationCode, Operations[InstructionPointer - 1].argument);
+            {
+                if (!ExecuteStep(Operations[InstructionPointer - 1].operationCode, Operations[InstructionPointer - 1].argument))
+                    return;
+            }
 
-            
+
         }
         public bool ExecuteOneStep()
         {
-            ExecuteStep(Operations[InstructionPointer - 1].operationCode, Operations[InstructionPointer - 1].argument);
+            // stop execution if ExecuteStep returns false;
+            if (!ExecuteStep(Operations[InstructionPointer - 1].operationCode, Operations[InstructionPointer - 1].argument))
+                return false;
+
+
             InstructionPointer++;
-            return true;
+            if (InstructionPointer > Operations.Count)
+                return false;
+            else
+                return true;
         }
 
         private bool ExecuteStep(OperationCode opcode, int argument)
@@ -245,14 +255,20 @@ namespace Favo
             if (Code.Count == 1 && Code[0] == "")
                 return;
 
+            ScanForLabels();
+
             foreach (string item in Code)
             {
                 // ignore empty lines of code
                 if(string.IsNullOrWhiteSpace(item))
-            		continue;
+                {
+                    counter++;
+                    continue;
+                }
+            		
 
                 // ignore comments
-                if (item.Substring(0, 2) == "//")
+                if (item.Length > 1 && item.Substring(0, 2) == "//")
                 {
                     Operations.Add(new Operation(InstructionPointer, OperationCode.NULL, 0));
                     counter++;
@@ -323,7 +339,9 @@ namespace Favo
                         break;
                     case "end":
                         opcode = OperationCode.END;
-                        break;
+                        Operations.Add(new Operation(counter, opcode, 0));
+                        counter++;
+                        continue;
                     case "if":
                         opcode = OperationCode.IF;
                         break;
@@ -343,15 +361,15 @@ namespace Favo
                         // if last character :
                         if(parts[0].Substring(parts[0].Length - 1) == ":")
                         {
-                            // Add Label name and line number to Dictionary
+                           /* // Add Label name and line number to Dictionary
                             Labels.Add(parts[0].Substring(0, parts[0].Length - 1), counter);
 
                             foreach (var element in Labels)
                                 Console.WriteLine(element.ToString());
-
+                            */
                             // Add null operation to Operations to prevent gaps
                             Operations.Add(new Operation(counter, OperationCode.NULL, 0));
-
+                            
                             // Increment Pointer and Counter
                             counter++;
                             continue;
@@ -361,7 +379,7 @@ namespace Favo
                 }
 
                 // throw exception if more than one whitespace
-                if (parts.Length != 2)
+                if (parts.Length != 2 && opcode != OperationCode.END)
                 {
                     throw new Exception("Too many whitespaces at line " + (counter).ToString());
                 }
@@ -377,6 +395,20 @@ namespace Favo
                 Operations.Add(new Operation(counter, opcode, argument));
 
                 // Increment instruction counter for each new instruction
+                counter++;
+            }
+        }
+
+        private void ScanForLabels()
+        {
+            int counter = 1;
+            foreach(string item in Code)
+            {
+                if(item.EndsWith(":"))
+                {
+                    Labels.Add(item.Substring(0, item.Length - 1), counter);
+                    Console.WriteLine(item);
+                }
                 counter++;
             }
         }
