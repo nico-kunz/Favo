@@ -289,7 +289,7 @@ namespace Favo
         private void Highlight()
         {
             UpdateCodelines();
-            codelines.Text = codelines.Text.Insert(codelines.Text.IndexOf(rM.InstructionPointer.ToString())-1,  " <--"); //Text selection highlighting too complex and prone to bugs
+            codelines.Text = codelines.Text.Insert(codelines.Text.IndexOf((rM.InstructionPointer - 1).ToString()) + 1,  " <--"); //Text selection highlighting too complex and prone to bugs
         }
 
         #region Updates
