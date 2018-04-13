@@ -124,6 +124,7 @@ namespace Favo
 
             try
             {
+                // TODO: IMPLEMENT OPTIMISATION (compiled bool)!!! 
                 rM = new RegisterMachine(textEditorBox.Text.Split('\n').ToList());
                 compiled = true;
                 rM.ExecuteRegisterMachine(false);
