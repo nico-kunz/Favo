@@ -12,6 +12,7 @@ namespace Favo
         private Dictionary<string, int> Labels;
         public int InstructionPointer {get; private set;}
         public int InstructionCounter {get; private set;}
+        public bool JakobiIf;
 
         #region DataStructures
         /// <summary>
@@ -89,7 +90,7 @@ namespace Favo
         /// Constructor of class RegisterMaschine
         /// </summary>
         /// <param name="codeToExecute">Code that is to be executed by the register machine</param>
-        public RegisterMachine(List<string> codeToExecute)
+        public RegisterMachine(List<string> codeToExecute, bool JakobiIf)
         {
             // initialize code the register machine has to execute
             Code = codeToExecute;
@@ -98,6 +99,7 @@ namespace Favo
             InstructionPointer = 1;
             InstructionCounter = 0;
             Accumulator = 0;
+            this.JakobiIf = JakobiIf;
             Heap = new Registers();
             Operations = new List<Operation>();
             Labels = new Dictionary<string, int>();
@@ -400,38 +402,65 @@ namespace Favo
                         continue;
 
                     case "if":
+                        if (JakobiIf == true)
+                            throw new Exception("Error: You are not allowed to use this kind of if-command in the basic if mode! Wrong if-command used at line " + counter);
+
                         opcode = OperationCode.IF;
                         break;
 
                     case "if<":
+                        if (JakobiIf == true)
+                            throw new Exception("Error: You are not allowed to use this kind of if-command in the basic if mode! Wrong if-command used at line " + counter);
+
                         opcode = OperationCode.IFSM;
                         break;
 
                     case "if>":
+                        if (JakobiIf == true)
+                            throw new Exception("Error: You are not allowed to use this kind of if-command in the basic if mode! Wrong if-command used at line " + counter);
+
                         opcode = OperationCode.IFBIG;
                         break;
 
                     case "cif":
+                        if (JakobiIf == true)
+                            throw new Exception("Error: You are not allowed to use this kind of if-command in the basic if mode! Wrong if-command used at line " + counter);
+
                         opcode = OperationCode.CIF;
                         break;
 
                     case "cif<":
+                        if (JakobiIf == true)
+                            throw new Exception("Error: You are not allowed to use this kind of if-command in the basic if mode! Wrong if-command used at line " + counter);
+
                         opcode = OperationCode.CIFSM;
                         break;
 
                     case "cif>":
+                        if (JakobiIf == true)
+                            throw new Exception("Error: You are not allowed to use this kind of if-command in the basic if mode! Wrong if-command used at line " + counter);
+
                         opcode = OperationCode.CIFBIG;
                         break;
 
                     case "iif":
+                        if (JakobiIf == true)
+                            throw new Exception("Error: You are not allowed to use this kind of if-command in the basic if mode! Wrong if-command used at line " + counter);
+
                         opcode = OperationCode.IIF;
                         break;
 
                     case "iif<":
+                        if (JakobiIf == true)
+                            throw new Exception("Error: You are not allowed to use this kind of if-command in the basic if mode! Wrong if-command used at line " + counter);
+
                         opcode = OperationCode.IIFSM;
                         break;
 
                     case "iif>":
+                        if (JakobiIf == true)
+                            throw new Exception("Error: You are not allowed to use this kind of if-command in the basic if mode! Wrong if-command used at line " + counter);
+
                         opcode = OperationCode.IIFBIG;
                         break;
 
@@ -459,7 +488,7 @@ namespace Favo
                 // throw exception if more than one whitespace
                 if (parts.Length != 2 && opcode != OperationCode.END)
                 {
-                    throw new Exception("Too many whitespaces at line " + (counter).ToString());
+                    throw new Exception("Wrong amount of whitespaces at line " + (counter).ToString());
                 }
 
 
