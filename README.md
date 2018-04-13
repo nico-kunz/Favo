@@ -1,6 +1,6 @@
 # Favo
 
-## Operations:
+## Operations
 			C=Constant
 			I=Indirect
 			BIG/SM=BIGGER/SMALLER
