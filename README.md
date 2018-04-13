@@ -1,11 +1,12 @@
 # Favo
 
-##Operations:
+## Operations:
 			C=Constant
 			I=Indirect
 			BIG/SM=BIGGER/SMALLER
 			
-			```LOAD
+			```
+			LOAD
             CLOAD
             ILOAD
 			
@@ -45,4 +46,5 @@
 
             GIF
 			
-			END```
+			END
+			```
