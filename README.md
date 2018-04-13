@@ -6,6 +6,7 @@
 			BIG/SM=BIGGER/SMALLER
 			
 			```
+			
 				LOAD
 				CLOAD
 				ILOAD
@@ -28,10 +29,10 @@
 				DIV
 				CDIV
 				IDIV
-		
+				
 				GOTO
 				IGOTO
-		
+				
 				IF
 				IFBIG
 				IFSM
@@ -39,12 +40,13 @@
 				CIF
 				CIFBIG
 				CIFSM
-		
+				
 				IIF
 				IIFBIG
 				IIFSM
-		
+				
 				GIF
 				
 				END
+				
 			```
