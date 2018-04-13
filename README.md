@@ -2,17 +2,48 @@
 
 Registermachine Computer Science
 
-Classes:
+Operations: C=Constant
+			I=Indirect
+			BIG/SM=</>
+			
+			LOAD,
+            CLOAD
+            ILOAD
+			
+            STORE
+            ISTORE
+			
+            ADD
+            CADD
+            IADD
+			
+            SUB
+            CSUB
+            ISUB
+			
+            MUL
+            CMUL
+            IMUL
+			
+            DIV
+            CDIV
+            IDIV
 
-Dialog
+            GOTO
+            IGOTO
 
-  Creates and opens a File Dialog to save and load files.
+            IF
+            IFBIG
+            IFSM
+			
+            CIF
+            CIFBIG
+            CIFSM
 
-Filehandler
+            IIF
+            IIFBIG
+            IIFSM
 
-  Saves and/or loads the selected files.
-
-RegisterMachine
-
-Register
-  Emulates the Register of the Machine. Overloaded List<> file type. Stores integers.
+            GIF
+			
+			END
