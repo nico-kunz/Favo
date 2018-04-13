@@ -91,33 +91,33 @@
             // helpMenuLabel
             // 
             this.helpMenuLabel.AutoSize = true;
-            this.helpMenuLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.helpMenuLabel.Font = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.helpMenuLabel.ForeColor = System.Drawing.Color.White;
             this.helpMenuLabel.Location = new System.Drawing.Point(275, 30);
             this.helpMenuLabel.Name = "helpMenuLabel";
-            this.helpMenuLabel.Size = new System.Drawing.Size(182, 39);
+            this.helpMenuLabel.Size = new System.Drawing.Size(186, 46);
             this.helpMenuLabel.TabIndex = 10;
             this.helpMenuLabel.Text = "Help Menu";
             // 
             // operationsLabel
             // 
             this.operationsLabel.AutoSize = true;
-            this.operationsLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.operationsLabel.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.operationsLabel.ForeColor = System.Drawing.Color.White;
             this.operationsLabel.Location = new System.Drawing.Point(40, 195);
             this.operationsLabel.Name = "operationsLabel";
-            this.operationsLabel.Size = new System.Drawing.Size(155, 31);
+            this.operationsLabel.Size = new System.Drawing.Size(154, 37);
             this.operationsLabel.TabIndex = 11;
             this.operationsLabel.Text = "Operations:";
             // 
             // ifModeLabel
             // 
             this.ifModeLabel.AutoSize = true;
-            this.ifModeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ifModeLabel.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ifModeLabel.ForeColor = System.Drawing.Color.White;
             this.ifModeLabel.Location = new System.Drawing.Point(519, 195);
             this.ifModeLabel.Name = "ifModeLabel";
-            this.ifModeLabel.Size = new System.Drawing.Size(126, 31);
+            this.ifModeLabel.Size = new System.Drawing.Size(130, 37);
             this.ifModeLabel.TabIndex = 12;
             this.ifModeLabel.Text = "if-Modes:";
             // 
