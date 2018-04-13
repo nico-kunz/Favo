@@ -1,1 +1,0 @@
-Any product that needs a manual to work is broken. -Elon Musk
