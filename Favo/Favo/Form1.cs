@@ -19,7 +19,7 @@ namespace Favo
         public int qAnzahl = 25;
         public int index = 0;
         public string[] displayText;
-        bool saved, compiled, ifMode; //ifMode indicates whether simple if is used instead of complex if (replaces IF,IIF,CIF)
+        bool saved, compiled, ifMode; //ifMode indicates whether basic if is used instead of complex if
         const int EM_LINESCROLL = 0x00B6;
 
         #endregion
