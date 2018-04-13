@@ -1,12 +1,11 @@
 # Favo
 
-Registermachine Computer Science
-
-Operations: C=Constant
+##Operations:
+			C=Constant
 			I=Indirect
-			BIG/SM=</>
+			BIG/SM=BIGGER/SMALLER
 			
-			LOAD
+			```LOAD
             CLOAD
             ILOAD
 			
@@ -46,4 +45,4 @@ Operations: C=Constant
 
             GIF
 			
-			END
+			END```
