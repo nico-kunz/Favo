@@ -6,7 +6,7 @@ Operations: C=Constant
 			I=Indirect
 			BIG/SM=</>
 			
-			LOAD,
+			LOAD
             CLOAD
             ILOAD
 			
