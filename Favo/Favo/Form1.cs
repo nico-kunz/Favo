@@ -19,7 +19,7 @@ namespace Favo
         public int qAnzahl = 25;
         public int index = 0;
         public string[] displayText;
-        bool saved, compiled, ifMode, eEgg; //ifMode indicates whether simple if is used instead of complex if (replaces IF,IIF,CIF)
+        bool saved, compiled, ifMode; //ifMode indicates whether simple if is used instead of complex if (replaces IF,IIF,CIF)
         const int EM_LINESCROLL = 0x00B6;
 
         #endregion
@@ -266,14 +266,8 @@ namespace Favo
 
         void PictureBox1Click(object sender, EventArgs e)
         {
-
-            eEgg = !eEgg;
-            if (eEgg == true)
-            {
-                toolStripMenuItem1.ToolTipText = displayText[index];
-                index++;
-            }
-            else { toolStripMenuItem1.ToolTipText = ""; }
+            toolStripMenuItem1.ToolTipText = displayText[index];
+            index++;
             if (index >= qAnzahl) index = 0;
         }
 

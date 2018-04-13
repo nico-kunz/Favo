@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Reflection;
 using System.Collections.Generic;
 
 namespace Favo
@@ -18,6 +17,7 @@ namespace Favo
             // Check if wanted file actually exists
             if (!File.Exists(path))
                 throw new Exception("File at path " + path + " does not exist!");
+
 
 
             List<string> textFileLines = new List<string>();
@@ -52,6 +52,7 @@ namespace Favo
             using (StreamWriter Sw = new StreamWriter(path))
                 Sw.Write(content);
         }
+
         /// <summary>
         ///We don't know what it does.
         /// </summary>
