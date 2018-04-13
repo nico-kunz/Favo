@@ -38,7 +38,7 @@ namespace Favo
             InitializeComponent();
             menuStrip1.Renderer = new ToolStripProfessionalRenderer(new CustomColorTable());
 
-            rM = new RegisterMachine(new List<string>() { "" });
+            
             register = new Registers();
             dt = new DataTable();
             saved = true;
@@ -46,6 +46,8 @@ namespace Favo
             ifMode = false;
             displayText = new string[qAnzahl];
             displayText = FileHandler.QFiller(qAnzahl);
+            rM = new RegisterMachine(new List<string>() { "" }, ifMode);
+
             // Columns
             dt.Columns.Add("Index");
             dt.Columns.Add("Value");
@@ -127,7 +129,7 @@ namespace Favo
 
             try
             {
-                rM = new RegisterMachine(textEditorBox.Text.Split('\n').ToList());
+                rM = new RegisterMachine(textEditorBox.Text.Split('\n').ToList(), ifMode);
                 compiled = true;
                 rM.ExecuteRegisterMachine(false);
             }
@@ -151,7 +153,7 @@ namespace Favo
                 if(!compiled)
                 {
                     errorBox.Text = "";
-                    rM = new RegisterMachine(textEditorBox.Text.Split('\n').ToList());
+                    rM = new RegisterMachine(textEditorBox.Text.Split('\n').ToList(), ifMode);
                     compiled = true;
                 }
 
