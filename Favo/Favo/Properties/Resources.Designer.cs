@@ -63,26 +63,6 @@ namespace Favo.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Asset_3 {
-            get {
-                object obj = ResourceManager.GetObject("Asset 3", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Asset_31 {
-            get {
-                object obj = ResourceManager.GetObject("Asset 31", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap ASX_Open_blue_16x {
             get {
                 object obj = ResourceManager.GetObject("ASX_Open_blue_16x", resourceCulture);
@@ -106,6 +86,16 @@ namespace Favo.Properties {
         internal static System.Drawing.Bitmap FavoIcon {
             get {
                 object obj = ResourceManager.GetObject("FavoIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Logo {
+            get {
+                object obj = ResourceManager.GetObject("Logo", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

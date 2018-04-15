@@ -67,6 +67,11 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Registers.cs" />
     <Compile Include="RegisterMachine.cs" />
     <EmbeddedResource Include="Form1.resx">
@@ -77,14 +82,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -106,10 +106,8 @@
     <Content Include="Icons\Close_8x_16x.svg" />
     <Content Include="Icons\NewFile_16x.png" />
     <Content Include="Icons\NewFile_16x.svg" />
+    <None Include="Resources\MSHelpTableOfContent_16x.png" />
     <None Include="Resources\Asset 3.png" />
-    <None Include="Resources\Asset 31.png" />
-    <Content Include="Resources\MSHelpTableOfContent_16x.png" />
-    <None Include="Resources\MSHelpTableOfContent_16x1.png" />
     <EmbeddedResource Include="Resources\README.txt" />
     <None Include="Icons\Step_16x.png" />
     <None Include="Icons\SyncArrowRed_16x.png" />

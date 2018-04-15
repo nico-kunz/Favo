@@ -49,14 +49,14 @@
             this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
-            this.label19 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
-            this.label17 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).BeginInit();
             this.SuspendLayout();
@@ -68,7 +68,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1006, 24);
+            this.panel1.Size = new System.Drawing.Size(1286, 24);
             this.panel1.TabIndex = 0;
             this.panel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HelpPanel1_MouseDown);
             this.panel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.HelpPanel1_MouseMove);
@@ -82,7 +82,7 @@
             this.exitButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.exitButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.749999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.exitButton.ForeColor = System.Drawing.Color.White;
-            this.exitButton.Location = new System.Drawing.Point(982, 0);
+            this.exitButton.Location = new System.Drawing.Point(1262, 0);
             this.exitButton.Name = "exitButton";
             this.exitButton.Size = new System.Drawing.Size(24, 24);
             this.exitButton.TabIndex = 11;
@@ -96,12 +96,12 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel2.Location = new System.Drawing.Point(0, 557);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1006, 5);
+            this.panel2.Size = new System.Drawing.Size(1286, 5);
             this.panel2.TabIndex = 8;
             // 
             // logoPictureBox
             // 
-            this.logoPictureBox.Image = global::Favo.Properties.Resources.Asset_3;
+            this.logoPictureBox.Image = global::Favo.Properties.Resources.Logo;
             this.logoPictureBox.Location = new System.Drawing.Point(0, 30);
             this.logoPictureBox.Name = "logoPictureBox";
             this.logoPictureBox.Size = new System.Drawing.Size(269, 111);
@@ -138,9 +138,9 @@
             this.ifModeLabel.ForeColor = System.Drawing.Color.White;
             this.ifModeLabel.Location = new System.Drawing.Point(543, 195);
             this.ifModeLabel.Name = "ifModeLabel";
-            this.ifModeLabel.Size = new System.Drawing.Size(130, 37);
+            this.ifModeLabel.Size = new System.Drawing.Size(180, 37);
             this.ifModeLabel.TabIndex = 12;
-            this.ifModeLabel.Text = "if-Modes:";
+            this.ifModeLabel.Text = "if-Operations:";
             // 
             // label1
             // 
@@ -296,27 +296,16 @@
             this.label14.TabIndex = 20;
             this.label14.Text = "loads integer into accumulator";
             // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label19.ForeColor = System.Drawing.Color.White;
-            this.label19.Location = new System.Drawing.Point(546, 296);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(143, 21);
-            this.label19.TabIndex = 29;
-            this.label19.Text = "IFSM; CIFSM; IIFSM";
-            // 
             // label20
             // 
             this.label20.AutoSize = true;
             this.label20.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label20.ForeColor = System.Drawing.Color.White;
-            this.label20.Location = new System.Drawing.Point(546, 275);
+            this.label20.Location = new System.Drawing.Point(546, 317);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(150, 21);
+            this.label20.Size = new System.Drawing.Size(231, 21);
             this.label20.TabIndex = 28;
-            this.label20.Text = "IFBIG; CIFBIG; IIFBIG ";
+            this.label20.Text = "2. IF<; IF>; CIF<; CIF>; IIF<; IIF> ";
             // 
             // label21
             // 
@@ -325,64 +314,75 @@
             this.label21.ForeColor = System.Drawing.Color.White;
             this.label21.Location = new System.Drawing.Point(546, 254);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(74, 21);
+            this.label21.Size = new System.Drawing.Size(90, 21);
             this.label21.TabIndex = 27;
-            this.label21.Text = "IF; CIF; IIF";
+            this.label21.Text = "1. IF; CIF; IIF";
             // 
             // label15
             // 
             this.label15.AutoSize = true;
             this.label15.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label15.ForeColor = System.Drawing.Color.White;
-            this.label15.Location = new System.Drawing.Point(546, 317);
+            this.label15.Location = new System.Drawing.Point(546, 359);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(33, 21);
+            this.label15.Size = new System.Drawing.Size(49, 21);
             this.label15.TabIndex = 30;
-            this.label15.Text = "GIF";
+            this.label15.Text = "3. GIF";
             // 
             // label16
             // 
             this.label16.AutoSize = true;
             this.label16.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label16.ForeColor = System.Drawing.Color.White;
-            this.label16.Location = new System.Drawing.Point(709, 317);
+            this.label16.Location = new System.Drawing.Point(783, 359);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(100, 21);
+            this.label16.Size = new System.Drawing.Size(424, 21);
             this.label16.TabIndex = 34;
-            this.label16.Text = "add text here";
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label17.ForeColor = System.Drawing.Color.White;
-            this.label17.Location = new System.Drawing.Point(709, 296);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(100, 21);
-            this.label17.TabIndex = 33;
-            this.label17.Text = "add text here";
+            this.label16.Text = "executes next line of code if the accumulator is equal to zero";
             // 
             // label18
             // 
             this.label18.AutoSize = true;
             this.label18.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label18.ForeColor = System.Drawing.Color.White;
-            this.label18.Location = new System.Drawing.Point(709, 275);
+            this.label18.Location = new System.Drawing.Point(783, 317);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(100, 21);
+            this.label18.Size = new System.Drawing.Size(384, 21);
             this.label18.TabIndex = 32;
-            this.label18.Text = "add text here";
+            this.label18.Text = "similar to 1., \"less than\" or \"greater than\" comparisons";
             // 
             // label22
             // 
-            this.label22.AutoSize = true;
             this.label22.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label22.ForeColor = System.Drawing.Color.White;
-            this.label22.Location = new System.Drawing.Point(709, 254);
+            this.label22.Location = new System.Drawing.Point(783, 254);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(100, 21);
+            this.label22.Size = new System.Drawing.Size(487, 54);
             this.label22.TabIndex = 31;
-            this.label22.Text = "add text here";
+            this.label22.Text = "compare accumulator to register/constant/indirect register, if equal execute next" +
+    " line of code otherwise skip";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label17.ForeColor = System.Drawing.Color.White;
+            this.label17.Location = new System.Drawing.Point(295, 85);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(101, 21);
+            this.label17.TabIndex = 35;
+            this.label17.Text = "C = Constant";
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label19.ForeColor = System.Drawing.Color.White;
+            this.label19.Location = new System.Drawing.Point(297, 106);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(85, 21);
+            this.label19.TabIndex = 36;
+            this.label19.Text = "I = Indirect";
             // 
             // HelpMenu
             // 
@@ -390,13 +390,13 @@
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(47)))), ((int)(((byte)(51)))));
             this.CausesValidation = false;
-            this.ClientSize = new System.Drawing.Size(1006, 562);
-            this.Controls.Add(this.label16);
+            this.ClientSize = new System.Drawing.Size(1286, 562);
+            this.Controls.Add(this.label19);
             this.Controls.Add(this.label17);
+            this.Controls.Add(this.label16);
             this.Controls.Add(this.label18);
             this.Controls.Add(this.label22);
             this.Controls.Add(this.label15);
-            this.Controls.Add(this.label19);
             this.Controls.Add(this.label20);
             this.Controls.Add(this.label21);
             this.Controls.Add(this.label8);
@@ -454,13 +454,13 @@
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label19;
     }
 }
