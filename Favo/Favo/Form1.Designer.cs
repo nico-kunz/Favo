@@ -56,6 +56,7 @@ namespace Favo
             this.runToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stepByStepToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ifModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel4 = new System.Windows.Forms.Panel();
             this.labeloperations = new System.Windows.Forms.Label();
             this.labelOp = new System.Windows.Forms.Label();
@@ -260,7 +261,8 @@ namespace Favo
             this.toolStripMenuItem1,
             this.runToolStripMenuItem,
             this.stepByStepToolStripMenuItem,
-            this.ifModeToolStripMenuItem});
+            this.ifModeToolStripMenuItem,
+            this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Margin = new System.Windows.Forms.Padding(1);
             this.menuStrip1.Name = "menuStrip1";
@@ -344,6 +346,15 @@ namespace Favo
             this.ifModeToolStripMenuItem.Size = new System.Drawing.Size(29, 20);
             this.ifModeToolStripMenuItem.ToolTipText = "Switch if-Mode";
             this.ifModeToolStripMenuItem.Click += new System.EventHandler(this.IfModeToolStripMenuItemClick);
+            // 
+            // helpToolStripMenuItem
+            // 
+            this.helpToolStripMenuItem.Image = global::Favo.Properties.Resources.MSHelpTableOfContent_16x;
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            this.helpToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F1;
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(29, 20);
+            this.helpToolStripMenuItem.ToolTipText = "Help Menu (F1)";
+            this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
             // 
             // panel4
             // 
@@ -481,6 +492,7 @@ namespace Favo
         private ToolStripMenuItem stepByStepToolStripMenuItem;
         private RichTextBox textEditorBox;
         private RichTextBox codelines;
+        private ToolStripMenuItem helpToolStripMenuItem;
     }
 }
 

@@ -63,6 +63,26 @@ namespace Favo.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Asset_3 {
+            get {
+                object obj = ResourceManager.GetObject("Asset 3", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Asset_31 {
+            get {
+                object obj = ResourceManager.GetObject("Asset 31", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap ASX_Open_blue_16x {
             get {
                 object obj = ResourceManager.GetObject("ASX_Open_blue_16x", resourceCulture);
@@ -93,6 +113,16 @@ namespace Favo.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap MSHelpTableOfContent_16x {
+            get {
+                object obj = ResourceManager.GetObject("MSHelpTableOfContent_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap NewFile_16x {
             get {
                 object obj = ResourceManager.GetObject("NewFile_16x", resourceCulture);
@@ -101,7 +131,10 @@ namespace Favo.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Any product that needs a manual to work is broken. -Elon Musk ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Any product that needs a manual to work is broken. -Elon Musk
+        ///There have to be reasons that you get up in the morning and you want to live. Why do you want to live? What&apos;s the point? What inspires you? What do you love about the future? If the future does not include being out there among the stars and being a multi-planet species, I find that incredibly depressing. -Elon Musk
+        ///Nico (18), Chief Technical Officer bei Flamethrower Solutions: &quot;Wir möchten es für den Nutzer möglichst kompliziert haben&quot;
+        ///Ich ko [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         /// </summary>
         internal static string README {
             get {
