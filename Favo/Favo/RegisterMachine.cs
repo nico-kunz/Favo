@@ -492,11 +492,17 @@ namespace Favo
                 }
 
 
+
                 // save argument 
                 if (opcode == OperationCode.GOTO && int.TryParse(parts[1], out argument) == false)
                     argument = Labels[parts[1]];
                 else
+                {
                     argument = int.Parse(parts[1]);
+                    if (argument < 0)
+                        throw new Exception("Negative numbers are not supported! Line: " + counter.ToString());
+                }
+                    
 
                 // add everything to List<Operation> Operations
                 Operations.Add(new Operation(counter, opcode, argument));
