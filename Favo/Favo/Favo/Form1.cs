@@ -25,7 +25,7 @@ namespace Favo
         const int EM_LINESCROLL = 0x00B6;
 
         #endregion
-
+        //Ignore this very comment
         // custom colorTable class for MenuStrip (custom appearance)
         public class CustomColorTable : ProfessionalColorTable
         {
