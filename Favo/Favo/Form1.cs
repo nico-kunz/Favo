@@ -58,9 +58,7 @@ namespace Favo
 
             // disable sorting of columns
             foreach (DataGridViewColumn column in dataGridView2.Columns)
-            {
                 column.SortMode = DataGridViewColumnSortMode.NotSortable;
-            }
         }
 
         #region EventHandler
@@ -71,28 +69,12 @@ namespace Favo
             ToolStripManager.Renderer = new ToolStripProfessionalRenderer(new CustomColorTable());
         }
 
-        // Event Handler for the "Speichern als.." item from the MenuStrip
-        private void SaveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        // Event Handler for the "Neu" item from the MenuStrip, resets all variables and TextEditorBox.Text
+        private void NewToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            // Get path from SaveFileDialog, save TextEditorBox content at path
-            string s = Dialog.SaveFileDialog();
-            openPath = s;
-
-            if (s != null)
-                FileHandler.SaveFileContent(s, textEditorBox.Text);
-
-            saved = true;
-
-        }
-
-        // Event Handler for the "Speichern" item from the MenuStrip
-        private void SaveToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            // Execute SaveAs method when openPath not initialized
-            if (openPath != null)
-                FileHandler.SaveFileContent(openPath, textEditorBox.Text);
-            else
-                SaveAsToolStripMenuItem_Click(null, null);
+            openPath = null;
+            CheckSavedStatus();
+            textEditorBox.Text = "";
 
             saved = true;
         }
@@ -112,19 +94,36 @@ namespace Favo
             saved = true;
         }
 
-        // Event Handler for the "Neu" item from the MenuStrip, resets all variables and TextEditorBox.Text
-        private void NewToolStripMenuItem1_Click(object sender, EventArgs e)
+        // Event Handler for the "Speichern" item from the MenuStrip
+        private void SaveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            openPath = null;
-            CheckSavedStatus();
-            textEditorBox.Text = "";
+            // Execute SaveAs method when openPath not initialized
+            if (openPath != null)
+                FileHandler.SaveFileContent(openPath, textEditorBox.Text);
+            else
+                SaveAsToolStripMenuItem_Click(null, null);
 
             saved = true;
+        }
+
+        // Event Handler for the "Speichern als.." item from the MenuStrip
+        private void SaveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Get path from SaveFileDialog, save TextEditorBox content at path
+            string s = Dialog.SaveFileDialog();
+            openPath = s;
+
+            if (s != null)
+                FileHandler.SaveFileContent(s, textEditorBox.Text);
+
+            saved = true;
+
         }
 
         //Event Handler for the "Run" item in the MenuStrip, compiles and runs the program
         private void RunToolStripMenuItemClick(object sender, System.EventArgs e)
         {
+            UpdateCodelines();
             errorBox.Text = "";
 
             try
@@ -230,30 +229,15 @@ namespace Favo
         {
             UpdateCodelines();
 
+            
+
             // scroll codelinesTextBox to the position of textEditorBox
-            ScrollTo(GetScrollPos(textEditorBox.Handle, 1));
+            ScrollTo(GetScrollPos(textEditorBox.Handle, 1) + 1);
 
             saved = false;
             compiled = false;
         }
 
-        /// <summary>
-        /// Checks if latest changes are saved.
-        /// </summary>
-        void CheckSavedStatus()
-        {
-            // check if latest changes are saved, show MessageBox.
-            if (!saved)
-            {
-                DialogResult dialogResult = MessageBox.Show("Änderungen am Code speichern?", "Ungespeicherte Änderungen",
-                MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
-
-                if (dialogResult == DialogResult.Yes)
-                    SaveToolStripMenuItem_Click(null, null);
-            }
-        }
-
-        
         // Update Scrollbar pos
         private void TextEditorBox_VScroll(object sender, EventArgs e)
         {           
@@ -263,7 +247,7 @@ namespace Favo
         // Changes focus to textEditorBox when Codelines somehow enters focus
         private void Codelines_Enter(object sender, EventArgs e)
         {
-            textEditorBox.Focus();
+            //textEditorBox.Focus();
         }
 
         void PictureBox1Click(object sender, EventArgs e)
@@ -289,11 +273,34 @@ namespace Favo
 
         public void ScrollTo(int pos)
         {
-            SetScrollPos(codelines.Handle, 0x1, pos, true);
-            PostMessage(codelines.Handle, 0x115, 4 + 0x10000 * pos, 0);
+            SetScrollPos(codelines.Handle, 0x1, pos, false);
+            PostMessage(codelines.Handle, 0x0115, 4 + 0x10000 * pos, 0);
+        }
+
+        public void ScrollTo(IntPtr control, int pos)
+        {
+            SetScrollPos(control, 0x1, pos, false);
+            PostMessage(control, 0x0115, 4 + 0x10000 * pos, 0);
         }
 
         #endregion
+
+        
+        /// <summary>
+        /// Checks if latest changes are saved.
+        /// </summary>
+        void CheckSavedStatus()
+        {
+            // check if latest changes are saved, show MessageBox.
+            if (!saved)
+            {
+                DialogResult dialogResult = MessageBox.Show("Änderungen am Code speichern?", "Ungespeicherte Änderungen",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+
+                if (dialogResult == DialogResult.Yes)
+                    SaveToolStripMenuItem_Click(null, null);
+            }
+        }
 
         /// <summary>
         /// Update indicator for current line for step by step
@@ -321,23 +328,25 @@ namespace Favo
         // compare textEditorBox number of lines with codelines number of lines
         // add or remove linenumbers from codelinesTextBox if necessary
         private void UpdateCodelines()
-        {
+        {            
             if (textEditorBox.Lines.Length >= codelines.Lines.Length)
             {
                 codelines.Text = "";
-                for (int i = 1; i <= textEditorBox.Lines.Length; i++)
-                {
-                    codelines.Text += i + Environment.NewLine;
-                }
+                codelines.Text += 1;
+                for (int i = 2; i <= textEditorBox.Lines.Length; i++)
+                    codelines.Text += Environment.NewLine + i;
             }
 
             else if (textEditorBox.Lines.Length < codelines.Lines.Length)
             {
                 codelines.Text = "";
-                for (int i = 1; i <= textEditorBox.Lines.Length; i++)
-                {
-                    codelines.Text += i + Environment.NewLine;
-                }
+                codelines.Text += 1;
+                for (int i = 2; i <= textEditorBox.Lines.Length; i++)
+                    codelines.Text += Environment.NewLine + i;
+
+                int previousPosition = GetScrollPos(textEditorBox.Handle, 1);
+                ScrollTo(textEditorBox.Handle, GetScrollPos(codelines.Handle, 1));
+                ScrollTo(textEditorBox.Handle, previousPosition);
             }
         }
 
