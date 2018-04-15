@@ -73,7 +73,7 @@ namespace Favo
         private void NewToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             openPath = null;
-            CheckSavedStatus();
+            CheckSavedStatus("new");
             textEditorBox.Text = "";
 
             saved = true;
@@ -82,7 +82,7 @@ namespace Favo
         // Event Handler for the "Öffnen" item from the MenuStrip
         private void ÖffnenToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            CheckSavedStatus();
+            CheckSavedStatus("open");
 
             // Get file path from LoadFileDialog, read file from path and set TextEditorBox.Text to Filetext
             string s = Dialog.LoadFileDialog();
@@ -196,11 +196,18 @@ namespace Favo
             }
         }
 
+        // Event Handler for help ToolStripMenuItem, opens new Window
+        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form HelpMenu = new HelpMenu();
+            HelpMenu.Show();
+        }
+
         // Event Handler for the close button in the top right corner
         private void CloseButton_Click(object sender, EventArgs e)
         {
-            CheckSavedStatus();
-            Application.Exit();
+            //Main functionality in CheckSavedStatus method
+            CheckSavedStatus("exit");
         }
 
         // Form1 has no FormBorderStyle, this makes up for the missing dragability. Resize could be added.
@@ -285,22 +292,66 @@ namespace Favo
 
         #endregion
 
-        
+
         /// <summary>
-        /// Checks if latest changes are saved.
+        /// Checks for changes, calls for execution afterwards
+        /// <paramref name="task"/>Defines which task to execute afterwards.</param>
         /// </summary>
-        void CheckSavedStatus()
+        void CheckSavedStatus(string task)
         {
-            // check if latest changes are saved, show MessageBox.
+            //Check if latest changes are saved, show MessageBox.
             if (!saved)
             {
                 DialogResult dialogResult = MessageBox.Show("Änderungen am Code speichern?", "Ungespeicherte Änderungen",
-                MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+                MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation);
 
+                //Save changes
                 if (dialogResult == DialogResult.Yes)
+                {
                     SaveToolStripMenuItem_Click(null, null);
+                    ToolbarExecution(task);
+                }
+                //Abort changes
+                else if (dialogResult == DialogResult.No)
+                    ToolbarExecution(task);
+
             }
+            else
+                ToolbarExecution(task);
         }
+
+        /// <summary>
+        /// Executes the tasks
+        /// </summary>
+        /// <param name="task">Defines which task to execute.</param>
+        void ToolbarExecution(string task)
+        {
+            //What's the task?
+            //New File
+            if (task == "new")
+            {
+                openPath = null;
+                textEditorBox.Text = "";
+                saved = true;
+            }
+            //Open File
+            else if (task == "open")
+            {
+                // Get file path from LoadFileDialog, read file from path and set TextEditorBox.Text to Filetext
+                string s = Dialog.LoadFileDialog();
+                openPath = s;
+
+                if (s != null)
+                {
+                    textEditorBox.Text = String.Join(System.Environment.NewLine, FileHandler.GetFileContent(s));
+                    saved = true;
+                }
+            }
+            //Close Application
+            else if (task == "exit")
+                Application.Exit();
+        }
+
 
         /// <summary>
         /// Update indicator for current line for step by step
