@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -97,6 +97,11 @@
     <Content Include="Icons\Close_8x_16x.svg" />
     <Content Include="Icons\NewFile_16x.png" />
     <Content Include="Icons\NewFile_16x.svg" />
+    <EmbeddedResource Include="Resources\README.txt" />
+    <None Include="Icons\Step_16x.png" />
+    <None Include="Icons\SyncArrowRed_16x.png" />
+    <None Include="Icons\SyncArrow_16x.png" />
+    <None Include="Icons\Run_blue_16x.png" />
     <Content Include="Icons\SaveAs_16x.png" />
     <Content Include="Icons\SaveAs_16x.svg" />
     <Content Include="Icons\Save_16x.png" />

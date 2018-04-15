@@ -8,17 +8,18 @@ using System.Windows.Forms;
 
 namespace Favo
 {
-    public partial class MainWindow : Form
+    public partial class Form1 : Form
     {
         #region Variables
         public Point mouseLocation;
-        public int startup;
         Registers register;
         RegisterMachine rM;
         private static string openPath;
         private DataTable dt;
-        bool saved, compiled, ifMode; //ifMode indicates whether simple if is used instead of complex if (replaces IF,IIF,CIF)
-
+        public int qAnzahl = 25;
+        public int index = 0;
+        public string[] displayText;
+        bool saved, compiled, ifMode; //ifMode indicates whether basic if is used instead of complex if
         const int EM_LINESCROLL = 0x00B6;
 
         #endregion
@@ -32,18 +33,20 @@ namespace Favo
 
 
         // Constructor, initialize important components and variables 
-        public MainWindow()
+        public Form1()
         {
             InitializeComponent();
             menuStrip1.Renderer = new ToolStripProfessionalRenderer(new CustomColorTable());
 
-            rM = new RegisterMachine(new List<string>() { "" });
+            
             register = new Registers();
             dt = new DataTable();
             saved = true;
-            startup = 0;
             compiled = false;
             ifMode = false;
+            displayText = new string[qAnzahl];
+            displayText = FileHandler.QFiller(qAnzahl);
+            rM = new RegisterMachine(new List<string>() { "" }, ifMode);
 
             // Columns
             dt.Columns.Add("Index");
@@ -55,9 +58,7 @@ namespace Favo
 
             // disable sorting of columns
             foreach (DataGridViewColumn column in dataGridView2.Columns)
-            {
                 column.SortMode = DataGridViewColumnSortMode.NotSortable;
-            }
         }
 
         #region EventHandler
@@ -68,6 +69,43 @@ namespace Favo
             ToolStripManager.Renderer = new ToolStripProfessionalRenderer(new CustomColorTable());
         }
 
+        // Event Handler for the "Neu" item from the MenuStrip, resets all variables and TextEditorBox.Text
+        private void NewToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            openPath = null;
+            CheckSavedStatus();
+            textEditorBox.Text = "";
+
+            saved = true;
+        }
+
+        // Event Handler for the "Öffnen" item from the MenuStrip
+        private void ÖffnenToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            CheckSavedStatus();
+
+            // Get file path from LoadFileDialog, read file from path and set TextEditorBox.Text to Filetext
+            string s = Dialog.LoadFileDialog();
+            openPath = s;
+
+            if (s != null)
+                textEditorBox.Text = String.Join(System.Environment.NewLine, FileHandler.GetFileContent(s));
+
+            saved = true;
+        }
+
+        // Event Handler for the "Speichern" item from the MenuStrip
+        private void SaveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Execute SaveAs method when openPath not initialized
+            if (openPath != null)
+                FileHandler.SaveFileContent(openPath, textEditorBox.Text);
+            else
+                SaveAsToolStripMenuItem_Click(null, null);
+
+            saved = true;
+        }
+
         // Event Handler for the "Speichern als.." item from the MenuStrip
         private void SaveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -76,48 +114,21 @@ namespace Favo
             openPath = s;
 
             if (s != null)
-            {
                 FileHandler.SaveFileContent(s, textEditorBox.Text);
-                saved = true;
-            }
-        }
 
-        // Event Handler for the "Speichern" item from the MenuStrip
-        private void SaveToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            // Execute SaveAs method when openPath not initialized
-            if (openPath != null)
-            {
-                FileHandler.SaveFileContent(openPath, textEditorBox.Text);
-                saved = true;
-            }
-            else
-                SaveAsToolStripMenuItem_Click(null, null);
-        }
+            saved = true;
 
-        // Event Handler for the "Öffnen" item from the MenuStrip
-        private void ÖffnenToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            //Main functionality in CheckSavedStatus method
-            CheckSavedStatus("open");
-        }
-
-        // Event Handler for the "Neu" item from the MenuStrip, resets all variables and TextEditorBox.Text
-        private void NewToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            //Main functionality in CheckSavedStatus method
-            CheckSavedStatus("new");
         }
 
         //Event Handler for the "Run" item in the MenuStrip, compiles and runs the program
         private void RunToolStripMenuItemClick(object sender, System.EventArgs e)
         {
+            UpdateCodelines();
             errorBox.Text = "";
 
             try
             {
-                // TODO: IMPLEMENT OPTIMISATION (compiled bool)!!! 
-                rM = new RegisterMachine(textEditorBox.Text.Split('\n').ToList());
+                rM = new RegisterMachine(textEditorBox.Text.Split('\n').ToList(), ifMode);
                 compiled = true;
                 rM.ExecuteRegisterMachine(false);
             }
@@ -141,7 +152,7 @@ namespace Favo
                 if(!compiled)
                 {
                     errorBox.Text = "";
-                    rM = new RegisterMachine(textEditorBox.Text.Split('\n').ToList());
+                    rM = new RegisterMachine(textEditorBox.Text.Split('\n').ToList(), ifMode);
                     compiled = true;
                 }
 
@@ -188,15 +199,8 @@ namespace Favo
         // Event Handler for the close button in the top right corner
         private void CloseButton_Click(object sender, EventArgs e)
         {
-            //Main functionality in CheckSavedStatus method
-            CheckSavedStatus("exit");
-        }
-
-        // Event Handler for help ToolStripMenuItem, opens new Window
-        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Form HelpMenu = new HelpMenu();
-            HelpMenu.Show();
+            CheckSavedStatus();
+            Application.Exit();
         }
 
         // Form1 has no FormBorderStyle, this makes up for the missing dragability. Resize could be added.
@@ -225,72 +229,15 @@ namespace Favo
         {
             UpdateCodelines();
 
+            
+
             // scroll codelinesTextBox to the position of textEditorBox
-            ScrollTo(GetScrollPos(textEditorBox.Handle, 1));
+            ScrollTo(GetScrollPos(textEditorBox.Handle, 1) + 1);
 
             saved = false;
             compiled = false;
         }
 
-        /// <summary>
-        /// Checks for changes, calls for execution afterwards
-        /// <paramref name="task"/>Defines which task to execute afterwards.</param>
-        /// </summary>
-        void CheckSavedStatus(string task)
-        {
-            //Check if latest changes are saved, show MessageBox.
-            if (!saved)
-            {
-                DialogResult dialogResult = MessageBox.Show("Änderungen am Code speichern?", "Ungespeicherte Änderungen",
-                MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation);
-
-                //Save changes
-                if (dialogResult == DialogResult.Yes)
-                {
-                    SaveToolStripMenuItem_Click(null, null);
-                    ToolbarExecution(task);
-                }
-                //Abort changes
-                else if (dialogResult == DialogResult.No)
-                    ToolbarExecution(task);
-
-            }
-            else
-                ToolbarExecution(task);
-        }        
-
-        /// <summary>
-        /// Executes the tasks
-        /// </summary>
-        /// <param name="task">Defines which task to execute.</param>
-        void ToolbarExecution(string task)
-        {
-            //What's the task?
-            //New File
-            if (task == "new")
-            {
-                openPath = null;
-                textEditorBox.Text = "";
-                saved = true;
-            }
-            //Open File
-            else if (task == "open")
-            {
-                // Get file path from LoadFileDialog, read file from path and set TextEditorBox.Text to Filetext
-                string s = Dialog.LoadFileDialog();
-                openPath = s;
-
-                if (s != null)
-                {
-                    textEditorBox.Text = String.Join(System.Environment.NewLine, FileHandler.GetFileContent(s));
-                    saved = true;
-                }
-            }
-            //Close Application
-            else if (task == "exit")
-                Application.Exit();
-        }
-        
         // Update Scrollbar pos
         private void TextEditorBox_VScroll(object sender, EventArgs e)
         {           
@@ -300,7 +247,14 @@ namespace Favo
         // Changes focus to textEditorBox when Codelines somehow enters focus
         private void Codelines_Enter(object sender, EventArgs e)
         {
-            textEditorBox.Focus();
+            //textEditorBox.Focus();
+        }
+
+        void PictureBox1Click(object sender, EventArgs e)
+        {
+            toolStripMenuItem1.ToolTipText = displayText[index];
+            index++;
+            if (index >= qAnzahl) index = 0;
         }
 
         #endregion
@@ -319,11 +273,34 @@ namespace Favo
 
         public void ScrollTo(int pos)
         {
-            SetScrollPos(codelines.Handle, 0x1, pos, true);
-            PostMessage(codelines.Handle, 0x115, 4 + 0x10000 * pos, 0);
+            SetScrollPos(codelines.Handle, 0x1, pos, false);
+            PostMessage(codelines.Handle, 0x0115, 4 + 0x10000 * pos, 0);
+        }
+
+        public void ScrollTo(IntPtr control, int pos)
+        {
+            SetScrollPos(control, 0x1, pos, false);
+            PostMessage(control, 0x0115, 4 + 0x10000 * pos, 0);
         }
 
         #endregion
+
+        
+        /// <summary>
+        /// Checks if latest changes are saved.
+        /// </summary>
+        void CheckSavedStatus()
+        {
+            // check if latest changes are saved, show MessageBox.
+            if (!saved)
+            {
+                DialogResult dialogResult = MessageBox.Show("Änderungen am Code speichern?", "Ungespeicherte Änderungen",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+
+                if (dialogResult == DialogResult.Yes)
+                    SaveToolStripMenuItem_Click(null, null);
+            }
+        }
 
         /// <summary>
         /// Update indicator for current line for step by step
@@ -347,29 +324,29 @@ namespace Favo
             labeloperations.Text = rM.InstructionCounter.ToString();
         }
 
-        
-
 
         // compare textEditorBox number of lines with codelines number of lines
         // add or remove linenumbers from codelinesTextBox if necessary
         private void UpdateCodelines()
-        {
+        {            
             if (textEditorBox.Lines.Length >= codelines.Lines.Length)
             {
                 codelines.Text = "";
-                for (int i = 1; i <= textEditorBox.Lines.Length; i++)
-                {
-                    codelines.Text += i + Environment.NewLine;
-                }
+                codelines.Text += 1;
+                for (int i = 2; i <= textEditorBox.Lines.Length; i++)
+                    codelines.Text += Environment.NewLine + i;
             }
 
             else if (textEditorBox.Lines.Length < codelines.Lines.Length)
             {
                 codelines.Text = "";
-                for (int i = 1; i <= textEditorBox.Lines.Length; i++)
-                {
-                    codelines.Text += i + Environment.NewLine;
-                }
+                codelines.Text += 1;
+                for (int i = 2; i <= textEditorBox.Lines.Length; i++)
+                    codelines.Text += Environment.NewLine + i;
+
+                int previousPosition = GetScrollPos(textEditorBox.Handle, 1);
+                ScrollTo(textEditorBox.Handle, GetScrollPos(codelines.Handle, 1));
+                ScrollTo(textEditorBox.Handle, previousPosition);
             }
         }
 

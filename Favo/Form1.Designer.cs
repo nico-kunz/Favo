@@ -1,4 +1,4 @@
-﻿using System.Drawing;
+using System.Drawing;
 using System.Windows.Forms;
 namespace Favo
 {
@@ -33,6 +33,7 @@ namespace Favo
         /// </summary>
         private void InitializeComponent()
         {
+
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -66,14 +67,18 @@ namespace Favo
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
+
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel3.SuspendLayout();
+
             this.menuStrip1.SuspendLayout();
             this.panel4.SuspendLayout();
             this.SuspendLayout();
+            
             // 
             // splitContainer1
             // 
@@ -85,6 +90,7 @@ namespace Favo
             this.splitContainer1.Panel1.Controls.Add(this.codelines);
             this.splitContainer1.Panel1.Controls.Add(this.textEditorBox);
             this.splitContainer1.Panel1.Padding = new System.Windows.Forms.Padding(5);
+          
             // 
             // splitContainer1.Panel2
             // 
@@ -441,11 +447,13 @@ namespace Favo
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
+
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
+
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.panel4.ResumeLayout(false);
@@ -457,20 +465,29 @@ namespace Favo
         private System.Windows.Forms.ToolStripMenuItem runToolStripMenuItem;
         private System.Windows.Forms.Button exitButton;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
+            this.ResumeLayout(false);
+
+        }
+
         private System.Windows.Forms.ToolStripMenuItem saveasToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem öffnenToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem neuToolStripMenuItem1;
 
         #endregion
+
         private System.Windows.Forms.MenuStrip menuStrip1;
         private Panel panel1;
         private Panel panel2;
+
         public SplitContainer splitContainer1;
         private Panel panel3;
         private DataGridView dataGridView1;
         private PictureBox pictureBox1;
         private DataGridView dataGridView2;
+
         private Panel panel4;
         private TextBox errorBox;
         private Label labelaccumulator;
@@ -480,6 +497,7 @@ namespace Favo
         private ToolStripMenuItem stepByStepToolStripMenuItem;
         private RichTextBox textEditorBox;
         private RichTextBox codelines;
+
     }
 }
 

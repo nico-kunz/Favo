@@ -1,18 +1,48 @@
 # Favo
 
-Registermachine Computer Science
-
-Classes:
-
-Dialog
-
-  Creates and opens a File Dialog to save and load files.
-
-Filehandler
-
-  Saves and/or loads the selected files.
-
-RegisterMachine
-
-Register
-  Emulates the Register of the Machine. Overloaded List<> file type. Stores integers.
+## Operations
+			C=Constant
+			I=Indirect
+			BIG/SM=BIGGER/SMALLER
+			
+			LOAD
+			CLOAD
+			ILOAD
+			
+			STORE
+			ISTORE
+			
+			ADD
+			CADD
+			IADD
+			
+			SUB
+			CSUB
+			ISUB
+			
+			MUL
+			CMUL
+			IMUL
+			
+			DIV
+			CDIV
+			IDIV
+			
+			GOTO
+			IGOTO
+			
+			IF
+			IFBIG
+			IFSM
+			
+			CIF
+			CIFBIG
+			CIFSM
+			
+			IIF
+			IIFBIG
+			IIFSM
+			
+			GIF
+			
+			END
