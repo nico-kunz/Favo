@@ -56,6 +56,11 @@ namespace Favo
 
             GIF,
 
+            IN,
+            IIN,
+
+            OUT,
+            IOUT,
 
             NULL
 
@@ -268,6 +273,40 @@ namespace Favo
                     if (Accumulator != 0)
                         InstructionPointer++;
                     break;
+
+                case OperationCode.IN:
+                    Console.WriteLine("Please enter a didgit!");
+                    try
+                    {
+                        Heap[argument] = int.Parse(Console.ReadLine());
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Error: You cannot enter letters!");
+                        throw new Exception("Error: You cannot enter letters!");
+                    }
+                    break;
+
+                case OperationCode.IIN:
+                    Console.WriteLine("Please enter a digit!");
+                    try
+                    {
+                        Heap[Heap[argument]] = int.Parse(Console.ReadLine());
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Error: You cannot enter letters!");
+                        throw new Exception("Error: You cannot enter letters!");
+                    }
+                    break;
+
+                case OperationCode.OUT:
+                    Console.WriteLine("Output: " + Heap[argument].ToString());
+                    break;
+
+                case OperationCode.IOUT:
+                    Console.WriteLine("Output: " + Heap[Heap[argument]].ToString());
+                    break;
             }
 
 
@@ -469,6 +508,22 @@ namespace Favo
                         Operations.Add(new Operation(counter, opcode, 0));
                         counter++;
                         continue;
+
+                    case "in":
+                        opcode = OperationCode.IN;
+                        break;
+
+                    case "iin":
+                        opcode = OperationCode.IIN;
+                        break;
+
+                    case "out":
+                        opcode = OperationCode.OUT;
+                        break;
+
+                    case "iout":
+                        opcode = OperationCode.IOUT;
+                        break;
 
                     default:
                         // if last character :
