@@ -10,9 +10,10 @@ namespace Favo
         private List<string> Code;
         private List<Operation> Operations;
         private Dictionary<string, int> Labels;
-        public int InstructionPointer {get; private set;}
-        public int InstructionCounter {get; private set;}
+        public int InstructionPointer { get; private set; }
+        public int InstructionCounter { get; private set; }
         public bool JakobiIf;
+        private bool WaitingForInput, InputIsInteger;
 
         #region DataStructures
         /// <summary>
@@ -57,10 +58,9 @@ namespace Favo
             GIF,
 
             IN,
-            IIN,
-
             OUT,
-            IOUT,
+            CIN,
+            COUT,
 
             NULL
 
@@ -89,6 +89,15 @@ namespace Favo
                 argument = arg;
             }
         }
+
+        public enum ReturnType
+        {
+            RUNNING,
+            INPUT,
+            OUTPUT,
+            END,
+            ERROR,
+        }
         #endregion
 
         /// <summary>
@@ -114,35 +123,67 @@ namespace Favo
         }
 
 
-
-        public void ExecuteRegisterMachine(bool stepByStep)
+        /// <summary>
+        /// Executes Register Machine
+        /// </summary>
+        /// <param name="IO">input/output string</param>
+        /// <returns>returnType Running/Input/Output or End</returns>
+        public ReturnType ExecuteRegisterMachine(ref string IO)
         {
-            for(; InstructionPointer <= Operations.Count; InstructionPointer++)
+            // Execution loop
+            for (; InstructionPointer <= Operations.Count; InstructionPointer++)
             {
-                if (!ExecuteStep(Operations[InstructionPointer - 1].operationCode, Operations[InstructionPointer - 1].argument))
-                    return;
+                // Executes one step at a time
+                ReturnType T = ExecuteOperation(Operations[InstructionPointer - 1].operationCode, Operations[InstructionPointer - 1].argument, ref IO);
+
+                // check if programm is still running, or if input/output is required
+                if (T != ReturnType.RUNNING)
+                {
+                    InstructionPointer++;
+                    return T;
+                }
+            }
+            return RegisterMachine.ReturnType.END;
+        }
+
+        /// <summary>
+        /// Executes a single operation of the regiser machine
+        /// </summary>
+        /// <param name="IO">input/output string</param>
+        /// <returns>ReturnType Running/Input/Output/End</returns>
+        public ReturnType ExecuteOneStep(ref string IO)
+        {
+            if (InstructionPointer > Operations.Count)
+                return ReturnType.END;
+            ReturnType T = ExecuteOperation(Operations[InstructionPointer - 1].operationCode, Operations[InstructionPointer - 1].argument, ref IO);
+            InstructionPointer++;
+            return T;
+        }
+
+        /// <summary>
+        /// executes a given operation
+        /// </summary>
+        /// <param name="opcode">operation to execute</param>
+        /// <param name="argument">argument of the operation</param>
+        /// <param name="IO">input/output string</param>
+        /// <returns>ReturnType Running/Input/Output/End</returns>
+        private ReturnType ExecuteOperation(OperationCode opcode, int argument, ref string IO)
+        {
+            // if input was sent in, ssave it in accumulator
+            if (WaitingForInput)
+            {
+                if (InputIsInteger)
+                    Accumulator = Math.Abs(int.Parse(IO));
+                else
+                    Accumulator = (int)(IO.ToCharArray()[0]);
+             
+                WaitingForInput = false;
             }
 
 
-        }
-        public bool ExecuteOneStep()
-        {
-            // stop execution if ExecuteStep returns false;
-            if (!ExecuteStep(Operations[InstructionPointer - 1].operationCode, Operations[InstructionPointer - 1].argument))
-                return false;
-
-
-            InstructionPointer++;
-            if (InstructionPointer > Operations.Count)
-                return false;
-            else
-                return true;
-        }
-
-        private bool ExecuteStep(OperationCode opcode, int argument)
-        {
             InstructionCounter++;
 
+            // Switch statement for executing the given operationcode
             switch (opcode)
             {
                 case OperationCode.LOAD:
@@ -222,7 +263,7 @@ namespace Favo
                     break;
 
                 case OperationCode.END:
-                    return false;
+                    return ReturnType.END;
 
                 case OperationCode.IF:
                     if (Accumulator != Heap[argument])
@@ -275,42 +316,27 @@ namespace Favo
                     break;
 
                 case OperationCode.IN:
-                    Console.WriteLine("Please enter a didgit!");
-                    try
-                    {
-                        Heap[argument] = int.Parse(Console.ReadLine());
-                    }
-                    catch
-                    {
-                        Console.WriteLine("Error: You cannot enter letters!");
-                        throw new Exception("Error: You cannot enter letters!");
-                    }
-                    break;
+                    WaitingForInput = true;
+                    InputIsInteger = true;
+                    return ReturnType.INPUT;
 
-                case OperationCode.IIN:
-                    Console.WriteLine("Please enter a digit!");
-                    try
-                    {
-                        Heap[Heap[argument]] = int.Parse(Console.ReadLine());
-                    }
-                    catch
-                    {
-                        Console.WriteLine("Error: You cannot enter letters!");
-                        throw new Exception("Error: You cannot enter letters!");
-                    }
-                    break;
+                case OperationCode.CIN:
+                    WaitingForInput = true;
+                    InputIsInteger = false;
+                    return ReturnType.INPUT;
 
                 case OperationCode.OUT:
-                    Console.WriteLine("Output: " + Heap[argument].ToString());
-                    break;
+                    IO = Heap[argument].ToString();
+                    return ReturnType.OUTPUT;
 
-                case OperationCode.IOUT:
-                    Console.WriteLine("Output: " + Heap[Heap[argument]].ToString());
-                    break;
+                case OperationCode.COUT:
+                    IO = ((char)(Heap[argument] & 0xff)).ToString();
+                    return ReturnType.OUTPUT;
+
             }
 
 
-            return true;
+            return ReturnType.RUNNING;
         }
 
         /// <summary>
@@ -333,14 +359,14 @@ namespace Favo
             foreach (string item in Code)
             {
                 // ignore empty lines of code
-                if(string.IsNullOrWhiteSpace(item))
+                if (string.IsNullOrWhiteSpace(item))
                 {
                     Operations.Add(new Operation(InstructionPointer, OperationCode.NULL, 0));
                     counter++;
 
                     continue;
                 }
-            		
+
 
                 // ignore comments
                 if (item.Length > 1 && item.Substring(0, 2) == "//")
@@ -513,25 +539,28 @@ namespace Favo
                         opcode = OperationCode.IN;
                         break;
 
-                    case "iin":
-                        opcode = OperationCode.IIN;
-                        break;
-
                     case "out":
                         opcode = OperationCode.OUT;
                         break;
 
-                    case "iout":
-                        opcode = OperationCode.IOUT;
+                    case "cin":
+                        opcode = OperationCode.CIN;
+                        Operations.Add(new Operation(counter, opcode, 0));
+                        counter++;
+                        continue;
+
+                    case "cout":
+                        opcode = OperationCode.COUT;
                         break;
+
 
                     default:
                         // if last character :
-                        if(parts[0].Substring(parts[0].Length - 1) == ":")
+                        if (parts[0].Substring(parts[0].Length - 1) == ":")
                         {
                             // Add null operation to Operations to prevent gaps
                             Operations.Add(new Operation(counter, OperationCode.NULL, 0));
-                            
+
                             // Increment Pointer and Counter
                             counter++;
                             continue;
@@ -557,7 +586,7 @@ namespace Favo
                     if (argument < 0)
                         throw new Exception("Negative numbers are not supported! Line: " + counter.ToString());
                 }
-                    
+
 
                 // add everything to List<Operation> Operations
                 Operations.Add(new Operation(counter, opcode, argument));
@@ -573,15 +602,21 @@ namespace Favo
         private void ScanForLabels()
         {
             int counter = 1;
-            foreach(string item in Code)
+            foreach (string item in Code)
             {
-                if(item.EndsWith(":"))
+                if (item.EndsWith(":"))
                 {
-                    Labels.Add(item.Substring(0, item.Length - 1), counter);
-                    Console.WriteLine(item);
+                    if (!(item.StartsWith(" ") || item.StartsWith("0") || item.StartsWith("1") || item.StartsWith("2") || item.StartsWith("3") || item.StartsWith("4") || item.StartsWith("5") || item.StartsWith("6") || item.StartsWith("7") || item.StartsWith("8") || item.StartsWith("9")))
+                    {
+                        Labels.Add(item.Substring(0, item.Length - 1), counter);
+                        Console.WriteLine(item);
+                    }
+                    else
+                        throw new Exception("Invalid label identifier at line " + counter);
                 }
-                counter++;
+                    counter++;
             }
+
         }
 
         /// <summary>
