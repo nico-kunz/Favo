@@ -35,7 +35,6 @@ namespace Favo
             public override Color MenuItemBorder { get { return Color.FromArgb(114, 137, 218); } }
         }
 
-
         // Constructor, initialize important components and variables 
         public Form1()
         {
@@ -146,10 +145,11 @@ namespace Favo
                     // Set register machine to "wait"-state and request input
                     if (T == RegisterMachine.ReturnType.INPUT)
                     {
-
                         UpdateLabels();
                         UpdateDataGridView();
                         waitingForInput = true;
+                        inputTextBox.ReadOnly = false;
+                        inputTextBox.Enabled = true;
                         inputTextBox.Text = "Waiting for Input";
                         return;
                     }
@@ -197,6 +197,8 @@ namespace Favo
                             UpdateLabels();
                             UpdateDataGridView();
                             waitingForInput = true;
+                            inputTextBox.ReadOnly = false;
+                            inputTextBox.Enabled = true;
                             inputTextBox.Text = "Waiting for Input";
                             return;
 
@@ -239,7 +241,7 @@ namespace Favo
         }
 
         // Event Handler for help ToolStripMenuItem, opens new Window
-        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
+        private void HelpToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Form HelpMenu = new HelpMenu();
             HelpMenu.Show();
@@ -299,84 +301,36 @@ namespace Favo
             textEditorBox.Focus();
         }
 
-        void PictureBox1Click(object sender, EventArgs e)
+        //manages input/output prompt
+        private void InputTextBox_KeyDown(object sender, KeyEventArgs e)
         {
-            toolStripMenuItem1.ToolTipText = displayText[index];
-            index++;
-            if (index >= qAnzahl) index = 0;
-        }
-
-        void SubmitInputClick(object sender, EventArgs e)
-        {
-            if (waitingForInput)
+            if (e.KeyCode == Keys.Enter)
             {
-                waitingForInput = false;
-
-                InputString = inputTextBox.Text;
-                inputTextBox.Text = "No input required";
-                if (StepByStep)
+                if (waitingForInput)
                 {
-                    try
-                    {
-                        Highlight();
-                        RegisterMachine.ReturnType T = rM.ExecuteRegisterMachine(ref InputString);
-                        if (T == RegisterMachine.ReturnType.OUTPUT)
-                        {
-                            errorBox.Text = InputString;
-                        }
-                        if (T == RegisterMachine.ReturnType.INPUT)
-                        {
-                            UpdateLabels();
-                            UpdateDataGridView();
-                            waitingForInput = true;
-                            inputTextBox.Text = "Waiting for Input";
-                            return;
-                        }
-                        if (T == RegisterMachine.ReturnType.END)
-                        {
-                            UpdateLabels();
-                            UpdateDataGridView();
-                            errorBox.Text = "Program execution finished!";
+                    waitingForInput = false;
 
-                            rM.ResetState();
-                            return;
-                        }
-                    }
-                    catch (Exception exc)
+                    InputString = inputTextBox.Text;
+                    inputTextBox.ReadOnly = false;
+                    inputTextBox.Enabled = true;
+                    textEditorBox.Focus();
+                    inputTextBox.Text = "No input required";
+                    if (StepByStep)
                     {
-                        errorBox.Text = exc.Message;
-                    }
-                }
-                else
-                {
-                    try
-                    {
-                        RegisterMachine.ReturnType T = rM.ExecuteRegisterMachine(ref InputString);
-                        if (T == RegisterMachine.ReturnType.OUTPUT)
+                        try
                         {
-                            errorBox.Text = InputString;
-                        }
-                        if (T == RegisterMachine.ReturnType.INPUT)
-                        {
-                            UpdateLabels();
-                            UpdateDataGridView();
-                            waitingForInput = true;
-                            inputTextBox.Text = "Waiting for Input";
-                            return;
-                        }
-                        while (T != RegisterMachine.ReturnType.END)
-                        {
-                            T = rM.ExecuteRegisterMachine(ref OutputString);
+                            Highlight();
+                            RegisterMachine.ReturnType T = rM.ExecuteRegisterMachine(ref InputString);
                             if (T == RegisterMachine.ReturnType.OUTPUT)
                             {
-                                errorBox.Text = OutputString;
+                                errorBox.Text = InputString;
                             }
                             if (T == RegisterMachine.ReturnType.INPUT)
                             {
-                                waitingForInput = true;
-                                inputTextBox.Text = "Waiting for Input";
                                 UpdateLabels();
                                 UpdateDataGridView();
+                                waitingForInput = true;
+                                inputTextBox.Text = "Waiting for Input";
                                 return;
                             }
                             if (T == RegisterMachine.ReturnType.END)
@@ -389,29 +343,100 @@ namespace Favo
                                 return;
                             }
                         }
+                        catch (Exception exc)
+                        {
+                            errorBox.Text = exc.Message;
+                        }
                     }
-                    catch (Exception exception)
+                    else
                     {
-                        errorBox.Text = exception.Message;
+                        try
+                        {
+                            RegisterMachine.ReturnType T = rM.ExecuteRegisterMachine(ref InputString);
+                            if (T == RegisterMachine.ReturnType.OUTPUT)
+                            {
+                                errorBox.Text = InputString;
+                            }
+                            if (T == RegisterMachine.ReturnType.INPUT)
+                            {
+                                UpdateLabels();
+                                UpdateDataGridView();
+                                waitingForInput = true;
+                                inputTextBox.Text = "Waiting for Input";
+                                return;
+                            }
+                            while (T != RegisterMachine.ReturnType.END)
+                            {
+                                T = rM.ExecuteRegisterMachine(ref OutputString);
+                                if (T == RegisterMachine.ReturnType.OUTPUT)
+                                {
+                                    errorBox.Text = OutputString;
+                                }
+                                if (T == RegisterMachine.ReturnType.INPUT)
+                                {
+                                    waitingForInput = true;
+                                    inputTextBox.Text = "Waiting for Input";
+                                    UpdateLabels();
+                                    UpdateDataGridView();
+                                    return;
+                                }
+                                if (T == RegisterMachine.ReturnType.END)
+                                {
+                                    UpdateLabels();
+                                    UpdateDataGridView();
+                                    errorBox.Text = "Program execution finished!";
+
+                                    rM.ResetState();
+                                    return;
+                                }
+                            }
+                        }
+                        catch (Exception exception)
+                        {
+                            errorBox.Text = exception.Message;
+                        }
+
+                        UpdateLabels();
+                        UpdateDataGridView();
+
+                        rM.ResetState();
                     }
 
-                    UpdateLabels();
-                    UpdateDataGridView();
-
-                    rM.ResetState();
                 }
-
             }
+
         }
 
-        void InputTextBoxTextChanged(object sender, EventArgs e)
+        private void InputTextBox_Enter(object sender, EventArgs e)
         {
-            if (!waitingForInput)
+            if (waitingForInput)
             {
+                inputTextBox.Text = "";
+            }
+            else inputTextBox.Text = "No input required"; ;
+        }
+
+        private void InputTextBox_Leave(object sender, EventArgs e)
+        {
+            if (waitingForInput)
+            {
+                inputTextBox.Text = "Waiting for Input";
+            }
+            else
+            {
+                inputTextBox.ReadOnly = true;
+                inputTextBox.Enabled = false;
                 inputTextBox.Text = "No input required";
             }
         }
 
+        void PictureBox1Click(object sender, EventArgs e)
+        {
+            toolStripMenuItem1.ToolTipText = displayText[index];
+            index++;
+            if (index >= qAnzahl) index = 0;
+        }
+        
         #endregion
 
         #region ScrollSync
@@ -562,11 +587,5 @@ namespace Favo
             }
         }
         #endregion
-
-
-        void Panel2Paint(object sender, PaintEventArgs e)
-        {
-
-        }
     }
 }
