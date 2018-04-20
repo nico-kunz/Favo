@@ -537,7 +537,9 @@ namespace Favo
 
                     case "in":
                         opcode = OperationCode.IN;
-                        break;
+                        Operations.Add(new Operation(counter, opcode, 0));
+                        counter++;
+                        continue;
 
                     case "out":
                         opcode = OperationCode.OUT;

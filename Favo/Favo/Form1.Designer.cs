@@ -64,7 +64,6 @@ namespace Favo
             this.labelAcc = new System.Windows.Forms.Label();
             this.errorBox = new System.Windows.Forms.TextBox();
             this.inputTextBox = new System.Windows.Forms.TextBox();
-            this.submitInput = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -239,7 +238,6 @@ namespace Favo
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1223, 10);
             this.panel2.TabIndex = 7;
-            this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.Panel2Paint);
             // 
             // panel3
             // 
@@ -257,15 +255,15 @@ namespace Favo
             this.menuStrip1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.menuStrip1.Dock = System.Windows.Forms.DockStyle.Left;
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-                                    this.neuToolStripMenuItem1,
-                                    this.öffnenToolStripMenuItem1,
-                                    this.saveToolStripMenuItem,
-                                    this.saveasToolStripMenuItem,
-                                    this.toolStripMenuItem1,
-                                    this.runToolStripMenuItem,
-                                    this.stepByStepToolStripMenuItem,
-                                    this.ifModeToolStripMenuItem,
-                                    this.helpToolStripMenuItem});
+            this.neuToolStripMenuItem1,
+            this.öffnenToolStripMenuItem1,
+            this.saveToolStripMenuItem,
+            this.saveasToolStripMenuItem,
+            this.toolStripMenuItem1,
+            this.runToolStripMenuItem,
+            this.stepByStepToolStripMenuItem,
+            this.ifModeToolStripMenuItem,
+            this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Margin = new System.Windows.Forms.Padding(1);
             this.menuStrip1.Name = "menuStrip1";
@@ -357,7 +355,7 @@ namespace Favo
             this.helpToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F1;
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(29, 20);
             this.helpToolStripMenuItem.ToolTipText = "Help Menu (F1)";
-            this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
+            this.helpToolStripMenuItem.Click += new System.EventHandler(this.HelpToolStripMenuItem_Click);
             // 
             // panel4
             // 
@@ -437,29 +435,26 @@ namespace Favo
             // 
             // inputTextBox
             // 
-            this.inputTextBox.Location = new System.Drawing.Point(105, 444);
+            this.inputTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(47)))), ((int)(((byte)(51)))));
+            this.inputTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.inputTextBox.Enabled = false;
+            this.inputTextBox.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.inputTextBox.ForeColor = System.Drawing.Color.White;
+            this.inputTextBox.Location = new System.Drawing.Point(110, 443);
             this.inputTextBox.Name = "inputTextBox";
-            this.inputTextBox.Size = new System.Drawing.Size(563, 20);
+            this.inputTextBox.ReadOnly = true;
+            this.inputTextBox.Size = new System.Drawing.Size(558, 25);
             this.inputTextBox.TabIndex = 9;
             this.inputTextBox.Text = "No input required";
-            this.inputTextBox.TextChanged += new System.EventHandler(this.InputTextBoxTextChanged);
-            // 
-            // submitInput
-            // 
-            this.submitInput.Location = new System.Drawing.Point(682, 441);
-            this.submitInput.Name = "submitInput";
-            this.submitInput.Size = new System.Drawing.Size(75, 23);
-            this.submitInput.TabIndex = 10;
-            this.submitInput.Text = "Submit";
-            this.submitInput.UseVisualStyleBackColor = true;
-            this.submitInput.Click += new System.EventHandler(this.SubmitInputClick);
+            this.inputTextBox.Enter += new System.EventHandler(this.InputTextBox_Enter);
+            this.inputTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.InputTextBox_KeyDown);
+            this.inputTextBox.Leave += new System.EventHandler(this.InputTextBox_Leave);
             // 
             // Form1
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(47)))), ((int)(((byte)(51)))));
             this.ClientSize = new System.Drawing.Size(1223, 632);
-            this.Controls.Add(this.submitInput);
             this.Controls.Add(this.inputTextBox);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel3);
@@ -488,8 +483,8 @@ namespace Favo
             this.panel4.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
-        private System.Windows.Forms.Button submitInput;
         private System.Windows.Forms.TextBox inputTextBox;
         private System.Windows.Forms.ToolStripMenuItem ifModeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem runToolStripMenuItem;
