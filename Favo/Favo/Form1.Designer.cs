@@ -63,6 +63,8 @@ namespace Favo
             this.labelaccumulator = new System.Windows.Forms.Label();
             this.labelAcc = new System.Windows.Forms.Label();
             this.errorBox = new System.Windows.Forms.TextBox();
+            this.inputTextBox = new System.Windows.Forms.TextBox();
+            this.submitInput = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -233,10 +235,11 @@ namespace Favo
             // 
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(234)))), ((int)(((byte)(86)))), ((int)(((byte)(51)))));
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(0, 612);
+            this.panel2.Location = new System.Drawing.Point(0, 622);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1223, 5);
+            this.panel2.Size = new System.Drawing.Size(1223, 10);
             this.panel2.TabIndex = 7;
+            this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.Panel2Paint);
             // 
             // panel3
             // 
@@ -245,7 +248,7 @@ namespace Favo
             this.panel3.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel3.Location = new System.Drawing.Point(0, 24);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(32, 588);
+            this.panel3.Size = new System.Drawing.Size(32, 598);
             this.panel3.TabIndex = 0;
             // 
             // menuStrip1
@@ -254,22 +257,22 @@ namespace Favo
             this.menuStrip1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.menuStrip1.Dock = System.Windows.Forms.DockStyle.Left;
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.neuToolStripMenuItem1,
-            this.öffnenToolStripMenuItem1,
-            this.saveToolStripMenuItem,
-            this.saveasToolStripMenuItem,
-            this.toolStripMenuItem1,
-            this.runToolStripMenuItem,
-            this.stepByStepToolStripMenuItem,
-            this.ifModeToolStripMenuItem,
-            this.helpToolStripMenuItem});
+                                    this.neuToolStripMenuItem1,
+                                    this.öffnenToolStripMenuItem1,
+                                    this.saveToolStripMenuItem,
+                                    this.saveasToolStripMenuItem,
+                                    this.toolStripMenuItem1,
+                                    this.runToolStripMenuItem,
+                                    this.stepByStepToolStripMenuItem,
+                                    this.ifModeToolStripMenuItem,
+                                    this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Margin = new System.Windows.Forms.Padding(1);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(2);
             this.menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.menuStrip1.ShowItemToolTips = true;
-            this.menuStrip1.Size = new System.Drawing.Size(38, 588);
+            this.menuStrip1.Size = new System.Drawing.Size(38, 598);
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -363,7 +366,7 @@ namespace Favo
             this.panel4.Controls.Add(this.labelaccumulator);
             this.panel4.Controls.Add(this.labelAcc);
             this.panel4.Controls.Add(this.errorBox);
-            this.panel4.Location = new System.Drawing.Point(105, 438);
+            this.panel4.Location = new System.Drawing.Point(105, 481);
             this.panel4.Name = "panel4";
             this.panel4.Padding = new System.Windows.Forms.Padding(5);
             this.panel4.Size = new System.Drawing.Size(989, 124);
@@ -432,11 +435,32 @@ namespace Favo
             this.errorBox.TabIndex = 0;
             this.errorBox.TabStop = false;
             // 
+            // inputTextBox
+            // 
+            this.inputTextBox.Location = new System.Drawing.Point(105, 444);
+            this.inputTextBox.Name = "inputTextBox";
+            this.inputTextBox.Size = new System.Drawing.Size(563, 20);
+            this.inputTextBox.TabIndex = 9;
+            this.inputTextBox.Text = "No input required";
+            this.inputTextBox.TextChanged += new System.EventHandler(this.InputTextBoxTextChanged);
+            // 
+            // submitInput
+            // 
+            this.submitInput.Location = new System.Drawing.Point(682, 441);
+            this.submitInput.Name = "submitInput";
+            this.submitInput.Size = new System.Drawing.Size(75, 23);
+            this.submitInput.TabIndex = 10;
+            this.submitInput.Text = "Submit";
+            this.submitInput.UseVisualStyleBackColor = true;
+            this.submitInput.Click += new System.EventHandler(this.SubmitInputClick);
+            // 
             // Form1
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(47)))), ((int)(((byte)(51)))));
-            this.ClientSize = new System.Drawing.Size(1223, 617);
+            this.ClientSize = new System.Drawing.Size(1223, 632);
+            this.Controls.Add(this.submitInput);
+            this.Controls.Add(this.inputTextBox);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
@@ -463,8 +487,10 @@ namespace Favo
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
             this.ResumeLayout(false);
-
+            this.PerformLayout();
         }
+        private System.Windows.Forms.Button submitInput;
+        private System.Windows.Forms.TextBox inputTextBox;
         private System.Windows.Forms.ToolStripMenuItem ifModeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem runToolStripMenuItem;
         private System.Windows.Forms.Button exitButton;
@@ -495,4 +521,3 @@ namespace Favo
         private ToolStripMenuItem helpToolStripMenuItem;
     }
 }
-

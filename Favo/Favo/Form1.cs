@@ -11,21 +11,25 @@ namespace Favo
     public partial class Form1 : Form
     {
         #region Variables
-        public Point mouseLocation;
-        Registers register;
-        RegisterMachine rM;
+        private Point mouseLocation;
+        private Registers register;
+        private RegisterMachine rM;
         private static string openPath;
         private DataTable dt;
-        public int qAnzahl = 25;
-        public int index = 0;
-        public string[] displayText;
-        bool saved, compiled, ifMode; //ifMode indicates whether basic if is used instead of complex if
-        const int EM_LINESCROLL = 0x00B6;
+       
+        private int index = 0;
+        private string[] displayText;
+        private bool saved, compiled, ifMode; //ifMode indicates whether basic if is used instead of complex if
+        private bool waitingForInput = false;
+        private bool StepByStep = false;
+        private string InputString = "";
+        private string OutputString = "";
+        private const int qAnzahl = 25;
 
         #endregion
 
         // custom colorTable class for MenuStrip (custom appearance)
-        public class CustomColorTable : ProfessionalColorTable
+        private class CustomColorTable : ProfessionalColorTable
         {
             public override Color MenuItemSelected { get { return Color.FromArgb(44, 47, 51); } }
             public override Color MenuItemBorder { get { return Color.FromArgb(114, 137, 218); } }
@@ -38,7 +42,7 @@ namespace Favo
             InitializeComponent();
             menuStrip1.Renderer = new ToolStripProfessionalRenderer(new CustomColorTable());
 
-            
+
             register = new Registers();
             dt = new DataTable();
             saved = true;
@@ -73,25 +77,18 @@ namespace Favo
         private void NewToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             openPath = null;
+            saved = true;
             CheckSavedStatus("new");
             textEditorBox.Text = "";
 
-            saved = true;
+
         }
 
         // Event Handler for the "Öffnen" item from the MenuStrip
         private void ÖffnenToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            CheckSavedStatus("open");
-
-            // Get file path from LoadFileDialog, read file from path and set TextEditorBox.Text to Filetext
-            string s = Dialog.LoadFileDialog();
-            openPath = s;
-
-            if (s != null)
-                textEditorBox.Text = String.Join(System.Environment.NewLine, FileHandler.GetFileContent(s));
-
             saved = true;
+            CheckSavedStatus("open");
         }
 
         // Event Handler for the "Speichern" item from the MenuStrip
@@ -101,7 +98,7 @@ namespace Favo
             if (openPath != null)
                 FileHandler.SaveFileContent(openPath, textEditorBox.Text);
             else
-                SaveAsToolStripMenuItem_Click(null, null);
+                SaveAsToolStripMenuItem_Click(sender, e);
 
             saved = true;
         }
@@ -121,8 +118,11 @@ namespace Favo
         }
 
         //Event Handler for the "Run" item in the MenuStrip, compiles and runs the program
-        private void RunToolStripMenuItemClick(object sender, System.EventArgs e)
+        private void RunToolStripMenuItemClick(object sender, EventArgs e)
         {
+            waitingForInput = false;
+
+            StepByStep = false;
             UpdateCodelines();
             errorBox.Text = "";
 
@@ -130,13 +130,36 @@ namespace Favo
             {
                 rM = new RegisterMachine(textEditorBox.Text.Split('\n').ToList(), ifMode);
                 compiled = true;
-                rM.ExecuteRegisterMachine(false);
+
+                RegisterMachine.ReturnType T = RegisterMachine.ReturnType.RUNNING;
+
+                // Execute code until end or input/output command
+                while (T != RegisterMachine.ReturnType.END)
+                {
+                    T = rM.ExecuteRegisterMachine(ref OutputString);
+                    // Show output if asked for
+                    if (T == RegisterMachine.ReturnType.OUTPUT)
+                    {
+                        errorBox.Text = OutputString;
+                    }
+
+                    // Set register machine to "wait"-state and request input
+                    if (T == RegisterMachine.ReturnType.INPUT)
+                    {
+
+                        UpdateLabels();
+                        UpdateDataGridView();
+                        waitingForInput = true;
+                        inputTextBox.Text = "Waiting for Input";
+                        return;
+                    }
+                }
             }
             catch (Exception exception)
             {
                 errorBox.Text = exception.Message;
             }
-            
+
             UpdateLabels();
             UpdateDataGridView();
 
@@ -146,36 +169,55 @@ namespace Favo
         // Event Handler for StepByStep ToolStripMenuItem, executes one line of code per click
         private void StepByStepToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            try
+            if (!waitingForInput)
             {
-                // Don't compile twice if code is already compiled
-                if(!compiled)
+                StepByStep = true;
+                try
                 {
-                    errorBox.Text = "";
-                    rM = new RegisterMachine(textEditorBox.Text.Split('\n').ToList(), ifMode);
-                    compiled = true;
+                    // Don't compile twice if code is already compiled
+                    if (!compiled)
+                    {
+                        errorBox.Text = "";
+                        rM = new RegisterMachine(textEditorBox.Text.Split('\n').ToList(), ifMode);
+                        compiled = true;
+                    }
+
+                    Highlight();
+
+                    // Check if there are more steps available or end of code is reached
+                    RegisterMachine.ReturnType T = rM.ExecuteOneStep(ref OutputString);
+
+                    switch(T)
+                    {
+                        case RegisterMachine.ReturnType.OUTPUT:
+                            errorBox.Text = OutputString;
+                            break;
+
+                        case RegisterMachine.ReturnType.INPUT:
+                            UpdateLabels();
+                            UpdateDataGridView();
+                            waitingForInput = true;
+                            inputTextBox.Text = "Waiting for Input";
+                            return;
+
+                        case RegisterMachine.ReturnType.END:
+                            UpdateLabels();
+                            UpdateDataGridView();
+                            errorBox.Text = "Program execution finished!";
+
+                            rM.ResetState();
+                            break;
+
+                        default:
+                            UpdateLabels();
+                            UpdateDataGridView();
+                            break;
+                    }
                 }
-
-                Highlight();
-
-                // Check if there are more steps available or end of code is reached
-                if (rM.ExecuteOneStep() == false)
+                catch (Exception exc)
                 {
-                    UpdateLabels();
-                    UpdateDataGridView();
-                    errorBox.Text = "Program execution finished!";
-
-                    rM.ResetState();
+                    errorBox.Text = exc.Message;
                 }
-                else
-                {
-                    UpdateLabels();
-                    UpdateDataGridView();
-                }
-            }
-            catch (Exception exc)
-            {
-                errorBox.Text = exc.Message;
             }
         }
 
@@ -236,7 +278,7 @@ namespace Favo
         {
             UpdateCodelines();
 
-            
+
 
             // scroll codelinesTextBox to the position of textEditorBox
             ScrollTo(GetScrollPos(textEditorBox.Handle, 1) + 1);
@@ -247,14 +289,14 @@ namespace Favo
 
         // Update Scrollbar pos
         private void TextEditorBox_VScroll(object sender, EventArgs e)
-        {           
+        {
             ScrollTo(GetScrollPos(textEditorBox.Handle, 1));
         }
 
         // Changes focus to textEditorBox when Codelines somehow enters focus
         private void Codelines_Enter(object sender, EventArgs e)
         {
-            //textEditorBox.Focus();
+            textEditorBox.Focus();
         }
 
         void PictureBox1Click(object sender, EventArgs e)
@@ -262,6 +304,112 @@ namespace Favo
             toolStripMenuItem1.ToolTipText = displayText[index];
             index++;
             if (index >= qAnzahl) index = 0;
+        }
+
+        void SubmitInputClick(object sender, EventArgs e)
+        {
+            if (waitingForInput)
+            {
+                waitingForInput = false;
+
+                InputString = inputTextBox.Text;
+                inputTextBox.Text = "No input required";
+                if (StepByStep)
+                {
+                    try
+                    {
+                        Highlight();
+                        RegisterMachine.ReturnType T = rM.ExecuteRegisterMachine(ref InputString);
+                        if (T == RegisterMachine.ReturnType.OUTPUT)
+                        {
+                            errorBox.Text = InputString;
+                        }
+                        if (T == RegisterMachine.ReturnType.INPUT)
+                        {
+                            UpdateLabels();
+                            UpdateDataGridView();
+                            waitingForInput = true;
+                            inputTextBox.Text = "Waiting for Input";
+                            return;
+                        }
+                        if (T == RegisterMachine.ReturnType.END)
+                        {
+                            UpdateLabels();
+                            UpdateDataGridView();
+                            errorBox.Text = "Program execution finished!";
+
+                            rM.ResetState();
+                            return;
+                        }
+                    }
+                    catch (Exception exc)
+                    {
+                        errorBox.Text = exc.Message;
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        RegisterMachine.ReturnType T = rM.ExecuteRegisterMachine(ref InputString);
+                        if (T == RegisterMachine.ReturnType.OUTPUT)
+                        {
+                            errorBox.Text = InputString;
+                        }
+                        if (T == RegisterMachine.ReturnType.INPUT)
+                        {
+                            UpdateLabels();
+                            UpdateDataGridView();
+                            waitingForInput = true;
+                            inputTextBox.Text = "Waiting for Input";
+                            return;
+                        }
+                        while (T != RegisterMachine.ReturnType.END)
+                        {
+                            T = rM.ExecuteRegisterMachine(ref OutputString);
+                            if (T == RegisterMachine.ReturnType.OUTPUT)
+                            {
+                                errorBox.Text = OutputString;
+                            }
+                            if (T == RegisterMachine.ReturnType.INPUT)
+                            {
+                                waitingForInput = true;
+                                inputTextBox.Text = "Waiting for Input";
+                                UpdateLabels();
+                                UpdateDataGridView();
+                                return;
+                            }
+                            if (T == RegisterMachine.ReturnType.END)
+                            {
+                                UpdateLabels();
+                                UpdateDataGridView();
+                                errorBox.Text = "Program execution finished!";
+
+                                rM.ResetState();
+                                return;
+                            }
+                        }
+                    }
+                    catch (Exception exception)
+                    {
+                        errorBox.Text = exception.Message;
+                    }
+
+                    UpdateLabels();
+                    UpdateDataGridView();
+
+                    rM.ResetState();
+                }
+
+            }
+        }
+
+        void InputTextBoxTextChanged(object sender, EventArgs e)
+        {
+            if (!waitingForInput)
+            {
+                inputTextBox.Text = "No input required";
+            }
         }
 
         #endregion
@@ -276,7 +424,7 @@ namespace Favo
         static extern bool PostMessage(IntPtr hWnd, uint msg, int wParam, int lParam);
 
         [DllImport("user32.dll")]
-        static extern int GetScrollPos(IntPtr hWnd, int nBar);  
+        static extern int GetScrollPos(IntPtr hWnd, int nBar);
 
         public void ScrollTo(int pos)
         {
@@ -316,8 +464,8 @@ namespace Favo
                     ToolbarExecution(task);
 
             }
-            else
-                ToolbarExecution(task);
+            //else
+               ToolbarExecution(task);
         }
 
         /// <summary>
@@ -361,7 +509,7 @@ namespace Favo
             UpdateCodelines();
 
             //Insert arrow after linenumber, add instructionPointer length to insertion position because arrow should be inserted after the digits
-            codelines.Text = codelines.Text.Insert(codelines.Text.IndexOf((rM.InstructionPointer).ToString()) + rM.InstructionPointer.ToString().Length,  " <--"); //Text selection highlighting too complex and prone to bugs
+            codelines.Text = codelines.Text.Insert(codelines.Text.IndexOf((rM.InstructionPointer).ToString()) + rM.InstructionPointer.ToString().Length, " <--"); //Text selection highlighting too complex and prone to bugs
         }
 
         #region Updates
@@ -379,7 +527,7 @@ namespace Favo
         // compare textEditorBox number of lines with codelines number of lines
         // add or remove linenumbers from codelinesTextBox if necessary
         private void UpdateCodelines()
-        {            
+        {
             if (textEditorBox.Lines.Length >= codelines.Lines.Length)
             {
                 codelines.Text = "";
@@ -407,7 +555,7 @@ namespace Favo
         private void UpdateDataGridView()
         {
             dt.Clear();
-            
+
             for (int i = 0; i < rM.Heap.Length; i++)
             {
                 dt.Rows.Add(i.ToString(), rM.Heap[i]);
@@ -415,5 +563,10 @@ namespace Favo
         }
         #endregion
 
+
+        void Panel2Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }
